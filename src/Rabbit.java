@@ -38,7 +38,6 @@ public class Rabbit extends Animals {
 
                     }
                 }
-                //Burrow burrow = new Burrow();
             }
         } else if (world.isDay() && world.getEntities().get(this) == null) {
 
@@ -53,18 +52,20 @@ public class Rabbit extends Animals {
             //OG DET DER KAN SKE ER, AT 2 FORSKELLIGE "SPØGELSER" KAN SÆTTE SIG PÅ SAMME TILE, OG NÅR DE SÅ ET TICK SENERE SPAWNER IND
             // SÅ KOMMER DER SELVFØLGELIG EN FEJL FORDI 2 BLOCKING ELEMENTS SPAWNER PÅ HINANDEN
         } else if (world.isDay()) {
-
-            this.location = world.getLocation(this);
-            Set<Location> neighbours = world.getEmptySurroundingTiles(this.location);
-            List<Location> list = new ArrayList<>(neighbours);
-            int randomNum = ThreadLocalRandom.current().nextInt(0, list.size());
-            Location l = list.get(randomNum);
-            world.move(this, l);
-            this.location = world.getLocation(this);
-            seekFood(Grass.class);
+            move();
         }
     }
 
+    public void move() {
+        this.location = world.getLocation(this);
+        Set<Location> neighbours = world.getEmptySurroundingTiles(this.location);
+        List<Location> list = new ArrayList<>(neighbours);
+        int randomNum = ThreadLocalRandom.current().nextInt(0, list.size());
+        Location l = list.get(randomNum);
+        world.move(this, l);
+        this.location = world.getLocation(this);
+        seekFood(Grass.class);
+    }
 
 
 
