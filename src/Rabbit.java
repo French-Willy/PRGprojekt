@@ -24,7 +24,7 @@ public class Rabbit extends Animals {
         if (world.getEntities().get(this) != null && world.isNight()) {
             /*world.remove(this);
             System.out.println("Rabbit has fallen asleep at this location: " + this.location);*/
-                Dig();
+            Dig();
         } else if (world.isDay() && world.getEntities().get(this) == null) {
             //DENNE METODE OPVÆKKER KANIN FRA DE DØDE EFTER DEN ER DØD AF SULT...
             //world.setTile(this.location, this);
@@ -65,74 +65,74 @@ public class Rabbit extends Animals {
     }
 
 
-
     public void seekFood(Class type) {
-        for (Location tile : world.getSurroundingTiles()) {
-            if (world.getTile(tile) != null && world.getTile(tile).getClass() == type) {
-                if (world.isTileEmpty(tile)) {
-                    world.move(this, tile);
-                    eat(tile);
-                    break;
-
-                }
-            }
-        }
-    }
-
-
-
-    public void Dig() {
-        for (Location tile : world.getSurroundingTiles()) {
-            if (world.getTile(tile) == null && favoriteBurrow == null) {
-                Burrow burrow = new Burrow(world);
-                world.move(this, tile);
-                world.setTile(tile, burrow);
-                favoriteBurrow = tile;
-                System.out.println("burrow lavet.... pog " + tile);
-                if (world.getLocation(this) == favoriteBurrow) {
-                    world.remove(this);
-                }
-            } //else if (favoriteBurrow != null) {
-            //findFavoriteHole();
-            // }
-        }
-    }
-
-    public void wakeUp() {
-        for (Location tile : world.getSurroundingTiles(this.favoriteBurrow))
-            if (world.isTileEmpty(tile)) {
-                world.setTile(tile, this);
-                break;
-            } else {
-
-            }
-    }
-
-    private void reproduction(World world) {
-        if (age == 1 && this.oneChildOnly)
+        if (hunger < 5) {
             for (Location tile : world.getSurroundingTiles()) {
-                if (world.getTile(tile) != null) {
-                    if (world.getTile(tile).getClass() == Rabbit.class) {
-                        Rabbit rabbitChild = new Rabbit(0, 5, world);
+                if (world.getTile(tile) != null && world.getTile(tile).getClass() == type) {
+                    if (world.isTileEmpty(tile)) {
+                        world.move(this, tile);
+                        eat(tile);
+                        break;
 
-                        Set<Location> neighbours = world.getEmptySurroundingTiles(this.location);
-                        List<Location> list = new ArrayList<>(neighbours);
-
-
-                        if (list.size() <= 0) {
-                            //deleteGrass(this,world);
-                        } else {
-                            int randomNum = ThreadLocalRandom.current().nextInt(0, list.size());
-                            Location l = list.get(randomNum);
-                            world.setTile(l, rabbitChild);
-                            rabbitChild.favoriteBurrow = this.favoriteBurrow;
-                            this.oneChildOnly = false;
-                            break;
-
-                        }
                     }
                 }
             }
+        }
     }
 
-}
+
+        public void Dig () {
+            for (Location tile : world.getSurroundingTiles()) {
+                if (world.getTile(tile) == null && favoriteBurrow == null) {
+                    Burrow burrow = new Burrow(world);
+                    world.move(this, tile);
+                    world.setTile(tile, burrow);
+                    favoriteBurrow = tile;
+                    System.out.println("burrow lavet.... pog " + tile);
+                    if (world.getLocation(this) == favoriteBurrow) {
+                        world.remove(this);
+                    }
+                } //else if (favoriteBurrow != null) {
+                //findFavoriteHole();
+                // }
+            }
+        }
+
+        public void wakeUp () {
+            for (Location tile : world.getSurroundingTiles(this.favoriteBurrow))
+                if (world.isTileEmpty(tile)) {
+                    world.setTile(tile, this);
+                    break;
+                } else {
+
+                }
+        }
+
+        private void reproduction (World world){
+            if (age == 1 && this.oneChildOnly)
+                for (Location tile : world.getSurroundingTiles()) {
+                    if (world.getTile(tile) != null) {
+                        if (world.getTile(tile).getClass() == Rabbit.class) {
+                            Rabbit rabbitChild = new Rabbit(0, 5, world);
+
+                            Set<Location> neighbours = world.getEmptySurroundingTiles(this.location);
+                            List<Location> list = new ArrayList<>(neighbours);
+
+
+                            if (list.size() <= 0) {
+                                //deleteGrass(this,world);
+                            } else {
+                                int randomNum = ThreadLocalRandom.current().nextInt(0, list.size());
+                                Location l = list.get(randomNum);
+                                world.setTile(l, rabbitChild);
+                                rabbitChild.favoriteBurrow = this.favoriteBurrow;
+                                this.oneChildOnly = false;
+                                break;
+
+                            }
+                        }
+                    }
+                }
+        }
+
+    }
