@@ -42,14 +42,28 @@ public class Rabbit extends Animals {
     }
 
     public void move() {
-        this.location = world.getLocation(this);
-        Set<Location> neighbours = world.getEmptySurroundingTiles(this.location);
-        List<Location> list = new ArrayList<>(neighbours);
-        int randomNum = ThreadLocalRandom.current().nextInt(0, list.size());
-        Location l = list.get(randomNum);
-        world.move(this, l);
-        this.location = world.getLocation(this);
-        seekFood(Grass.class);
+        if (age > 1 |) {
+            if(timeCount % 2 == 0){
+            this.location = world.getLocation(this);
+            Set<Location> neighbours = world.getEmptySurroundingTiles(this.location);
+            List<Location> list = new ArrayList<>(neighbours);
+            int randomNum = ThreadLocalRandom.current().nextInt(0, list.size());
+            Location l = list.get(randomNum);
+            world.move(this, l);
+            this.location = world.getLocation(this);
+            seekFood(Grass.class);
+            }
+        } else{
+            this.location = world.getLocation(this);
+            Set<Location> neighbours = world.getEmptySurroundingTiles(this.location);
+            List<Location> list = new ArrayList<>(neighbours);
+            int randomNum = ThreadLocalRandom.current().nextInt(0, list.size());
+            Location l = list.get(randomNum);
+            world.move(this, l);
+            this.location = world.getLocation(this);
+            seekFood(Grass.class);
+
+        }
     }
 
     public void eat(Location tile) {
@@ -112,7 +126,7 @@ public class Rabbit extends Animals {
     }
 
     private void reproduction(World world) {
-        if (age == 1 && this.oneChildOnly)
+        if (age == 2 && this.oneChildOnly)
             for (Location tile : world.getSurroundingTiles()) {
                 if (world.getTile(tile) != null) {
                     if (world.getTile(tile).getClass() == Rabbit.class && world.getTile(tile) != this) {
