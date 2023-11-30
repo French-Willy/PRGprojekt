@@ -42,7 +42,7 @@ public class Rabbit extends Animals {
     }
 
     public void move() {
-        if (age > 1 |) {
+        if (age > 1 || hunger < 3) {
             if(timeCount % 2 == 0){
             this.location = world.getLocation(this);
             Set<Location> neighbours = world.getEmptySurroundingTiles(this.location);
