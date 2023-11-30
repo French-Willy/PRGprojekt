@@ -81,58 +81,63 @@ public class Rabbit extends Animals {
     }
 
 
-        public void Dig () {
-            for (Location tile : world.getSurroundingTiles()) {
-                if (world.getTile(tile) == null && favoriteBurrow == null) {
-                    Burrow burrow = new Burrow(world);
-                    world.move(this, tile);
-                    world.setTile(tile, burrow);
-                    favoriteBurrow = tile;
-                    System.out.println("burrow lavet.... pog " + tile);
-                    if (world.getLocation(this) == favoriteBurrow) {
-                        world.remove(this);
-                    }
-                } //else if (favoriteBurrow != null) {
-                //findFavoriteHole();
-                // }
-            }
-        }
-
-        public void wakeUp () {
-            for (Location tile : world.getSurroundingTiles(this.favoriteBurrow))
-                if (world.isTileEmpty(tile)) {
-                    world.setTile(tile, this);
-                    break;
-                } else {
-
+    public void Dig() {
+        for (Location tile : world.getSurroundingTiles()) {
+            if (world.getTile(tile) == null && favoriteBurrow == null) {
+                Burrow burrow = new Burrow(world);
+                world.move(this, tile);
+                world.setTile(tile, burrow);
+                favoriteBurrow = tile;
+                System.out.println("burrow lavet.... pog " + favoriteBurrow);
+                if (world.getLocation(this) == favoriteBurrow) {
+                    this.location = world.getLocation(this);
+                    world.remove(this);
                 }
+            } //else if (favoriteBurrow != null) {
+            //findFavoriteHole();
+            // }
         }
+    }
 
-        private void reproduction (World world){
-            if (age == 1 && this.oneChildOnly)
-                for (Location tile : world.getSurroundingTiles()) {
-                    if (world.getTile(tile) != null) {
-                        if (world.getTile(tile).getClass() == Rabbit.class) {
-                            Rabbit rabbitChild = new Rabbit(0, 5, world);
+    public void wakeUp() {
+        for (Location tile : world.getSurroundingTiles(this.favoriteBurrow))
+            if (world.isTileEmpty(tile)) {
+                world.setTile(tile, this);
+                this.location = world.getLocation(this);
+                System.out.println("I THINK I woke up here: " + this.location);
+                break;
+            } else {
 
-                            Set<Location> neighbours = world.getEmptySurroundingTiles(this.location);
-                            List<Location> list = new ArrayList<>(neighbours);
+            }
+    }
+
+    private void reproduction(World world) {
+        if (age == 1 && this.oneChildOnly)
+            for (Location tile : world.getSurroundingTiles()) {
+                if (world.getTile(tile) != null) {
+                    if (world.getTile(tile).getClass() == Rabbit.class && world.getTile(tile) != this) {
+                        Rabbit rabbitChild = new Rabbit(0, 5, world);
+
+                        Set<Location> neighbours = world.getEmptySurroundingTiles(this.location);
+                        List<Location> list = new ArrayList<>(neighbours);
 
 
-                            if (list.size() <= 0) {
-                                //deleteGrass(this,world);
-                            } else {
-                                int randomNum = ThreadLocalRandom.current().nextInt(0, list.size());
-                                Location l = list.get(randomNum);
-                                world.setTile(l, rabbitChild);
-                                rabbitChild.favoriteBurrow = this.favoriteBurrow;
-                                this.oneChildOnly = false;
-                                break;
+                        if (list.size() <= 0) {
+                            //deleteGrass(this,world);
+                        } else {
+                            int randomNum = ThreadLocalRandom.current().nextInt(0, list.size());
+                            Location l = list.get(randomNum);
+                            world.setTile(l, rabbitChild);
+                            rabbitChild.favoriteBurrow = this.favoriteBurrow;
+                            this.oneChildOnly = false;
+                            break;
 
-                            }
                         }
                     }
-                }
-        }
 
+
+                }
+            }
     }
+
+}
