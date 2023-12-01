@@ -34,14 +34,14 @@ public class Main {
 
 
         Location place = new Location(0, 1);
-        Location bearSpawn = new Location(3,3);
+      //  Location bearSpawn = new Location(3,3);
         Person person = new Person(place);
         int grassAmount = ThreadLocalRandom.current().nextInt(3, 10);
         int animalAmount = ThreadLocalRandom.current().nextInt(1, 4);
         Bear bear = new Bear(0, 10, world);
 
         world.setTile(place, person);
-        world.setTile(bearSpawn, bear);
+     //   world.setTile(bearSpawn, bear);
         addGrass(world, grassAmount);
         addAnimal("rabbit",world, animalAmount);
 

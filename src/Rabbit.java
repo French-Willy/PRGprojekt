@@ -48,16 +48,19 @@ public class Rabbit extends Animals {
                 }
                 //Når kaninen er på hullet, skal den bare removes og det kalder en metode i Burrow:
                 //enterBurrow skal sige, at Burrow nu indeholder
-                if (world.getLocation(burrow) != null) {
-                   if (calculateDistance(world.getLocation(this),world.getLocation(burrow)) == 0) {
+                try {
+                    if (calculateDistance(world.getLocation(this),world.getLocation(burrow)) == 0){
                         System.out.println("5");
-                        Burrow.enterBurrow(this, (Burrow) world.getTile(closestBurrow));
+                        Burrow.enterBurrow(this, world.getTile(closestBurrow));
                         world.remove(this);
                         favoriteBurrow = closestBurrow;
                     }
                 }
-                if (closestBurrow != null) {
-                    makePath(this, world.getLocation(this), world.getLocation(burrow));
+                catch (IllegalArgumentException e){
+                }
+                if (closestBurrow != null && world.getEntities().get(this) != null) {
+                    System.out.println("9");
+                    makePath(this, world.getEntities().get(this), closestBurrow);
                 }
             }
             else if  (favoriteBurrow != null){
@@ -151,6 +154,12 @@ public class Rabbit extends Animals {
 
         public void Dig () {
         if (world.getTile(world.getCurrentLocation()) != null) {
+            try {
+                // if (world.getNonBlocking(this.location).getClass() == Grass.class) {
+                world.delete((world.getNonBlocking(world.getCurrentLocation())));
+            }
+            catch (IllegalArgumentException e) {
+            }
             Burrow burrow = new Burrow(world);
             world.setTile(world.getCurrentLocation(), burrow);
             favoriteBurrow = world.getCurrentLocation();
@@ -194,57 +203,6 @@ public class Rabbit extends Animals {
                     }
                 }
         }
-
-        //DENNE METODE VIL FINDE ALLE HULLER HVOR DER ER PLADS TIL KANINEN
-    /*
-    public  ArrayList<Location> findAllEmptyBurrows() {
-        ArrayList<Location> allBurrowsLocation = new ArrayList<>();
-        ArrayList<Location> allEmptyBurrowsLocation = new ArrayList<>();
-
-        // Denne foreach-lykke vil kigge igennem alle entities på mappen, og bagefter se, om det er en Burrow class
-        //og så tilføje lokationen til arraylisten allBurrowsLocation.
-        for (Object x : world.getEntities().keySet()) {
-            if (x.getClass() == Burrow.class) {
-                allBurrowsLocation.add(world.getEntities().get(x));
-            }
-        }
-        if(allBurrowsLocation.isEmpty()){
-            return null;
-        }
-        //Denne foreach-lykke er lidt kompliceret.
-        //Vi kigger igennem alle lookationerne af burrowsene, og når vi kalder "world.getTile(x)" og vi caster den til
-        // at være en Burrow så vil checkFullBurrow-metoden fra Burrow-klassen tjekke hvilke Burrows har ledig plads,
-        // og tilføje dem til den anden arraylist "allEmptyBurrowsLocation".
-        for (Location x : allBurrowsLocation) {
-            if (Burrow.checkFullBurrow((Burrow) world.getTile(x))) {
-                allEmptyBurrowsLocation.add(x);
-            }
-        }
-        //Det kunne jo være, at der ikke var nogle huller der var ledige, så den returner null og så vil
-        //rabbit grave sit eget hul.
-        if (allEmptyBurrowsLocation.isEmpty()) {
-            return null;
-
-            //Returnerer ArrayList med burrows, hvor der er plads til kaninen.
-        } else {
-            return allEmptyBurrowsLocation;
-        }
-        */
-
-
-        //Denne metode er lavet til at modtage den Arrayliste, som kommer fra "findAllEmptyBurrows".
-        // Lige nu gør den ikke noget, men jeg tænker den skal |||||returnere, den burrow der er tættest på kaninen.|||||
-        // Kan være der skal lidt pathing til?.
-
-        public Location getClosestBurrow (ArrayList < Location > allBurrows) {
-            Location closestBurrow = null;
-
-            //Kig igennem et ArrayList med locations of find ud af, hvilken location der er tættest på, og så returner den.
-
-
-            return closestBurrow;
-        }
-
         public void pathing () {
 
             for (Object object : world.getEntities().keySet()) {
