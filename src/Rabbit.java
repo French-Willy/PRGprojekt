@@ -68,6 +68,7 @@ public class Rabbit extends Animals {
 
 
     public void move() {
+        this.location = world.getLocation(this);
         if (world.getEmptySurroundingTiles(this.location).isEmpty()) {
         
         } else {
@@ -123,7 +124,6 @@ public class Rabbit extends Animals {
             }
         }
     }
-
 
     public void Dig() {
         for (Location tile : world.getSurroundingTiles()) {
@@ -234,6 +234,63 @@ public class Rabbit extends Animals {
 
 
         return closestBurrow;
+    }
+
+    public void pathing() {
+
+        for (Object object : world.getEntities().keySet()) {
+            if (object.getClass() == Burrow.class) {
+                makePath(this, world.getCurrentLocation(), world.getLocation(object));
+                //System.out.println(new Location(0,0)+"target");
+                // world.getEntities().get(Burrow.class)
+                //world.getLocation(object)
+            }
+        }
+    }
+
+    public double calculateDistance(Location initial, Location target) {
+        double x;
+        double y;
+        if (initial.getX() == target.getX()) {
+            x = 0;
+        } else if (initial.getX() > target.getY()) {
+            x = (initial.getX() - target.getX());
+            x = x * x;
+        } else {
+            x = (-initial.getX() + target.getX());
+            x = x * x;
+        }
+        if (initial.getY() == target.getY()) {
+            y = 0;
+        } else if (initial.getY() > target.getY()) {
+            y = (initial.getY() - target.getY());
+            y = y * y;
+        } else {
+            y = (-initial.getY() + target.getY());
+            y = y * y;
+        }
+        double distance = Math.sqrt(x + y);
+        return distance;
+    }
+
+    public void makePath(Object object, Location initial, Location target) {
+        double shortestDistance = calculateDistance(world.getCurrentLocation(), target);
+        Location closestTile = null;
+
+        if (initial == target) {
+        } else {
+            for (Location emptyTile : world.getEmptySurroundingTiles(initial)) {
+
+
+                while (calculateDistance(emptyTile, target) < shortestDistance) {
+                    shortestDistance = calculateDistance(emptyTile, target);
+                    closestTile = emptyTile;
+                }
+            }
+            if (closestTile != null) {
+                world.move(object, closestTile);
+            }
+        }
     }
 
 }
