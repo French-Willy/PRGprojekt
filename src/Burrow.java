@@ -36,10 +36,7 @@ public class Burrow extends Inanimate implements NonBlocking {
 
     public static boolean checkFullBurrow(Burrow burrow) {
         boolean hasSpace = false;
-        if (burrow.burrowSpace.get(2).getClass() == Rabbit.class) {
-            hasSpace = false;
-        }
-        if (burrow.burrowSpace.get(2).getClass() != Rabbit.class) {
+        if(burrow.burrowSpace.size() < 3){
             hasSpace = true;
         }
         return hasSpace;
