@@ -30,7 +30,7 @@ public class Rabbit extends Animals {
                 for (Object object : world.getEntities().keySet()) {
                     if (object.getClass() == Burrow.class) {
                         System.out.println("1");
-                        if (Burrow.getCheckFullBurrow((Burrow) object) == true) {
+                        if (Burrow.getCheckFullBurrow( object) == true) {
                             System.out.println("2");
                             while (calculateDistance(world.getLocation(this), world.getLocation(object)) < distacetoClosestBurrow) {
                                 distacetoClosestBurrow = calculateDistance(world.getLocation(this), world.getLocation(object));
@@ -64,16 +64,15 @@ public class Rabbit extends Animals {
                 }
             }
             else if  (favoriteBurrow != null){
-                System.out.println(favoriteBurrow);
-                System.out.println(world.getLocation(this));
-                if (calculateDistance(world.getLocation(this),favoriteBurrow) == 0) {
-                    System.out.println("7");
-                    Burrow.enterBurrow(this, favoriteBurrow);
-                    world.remove(this);
+                System.out.println(Burrow.getCheckFullBurrow(favoriteBurrow));
+                if (calculateDistance(world.getLocation(this),favoriteBurrow) == 0 && (Burrow.getCheckFullBurrow( favoriteBurrow) == true)) {
+                        Burrow.enterBurrow(this, favoriteBurrow);
+                        world.remove(this);
                 }
                 else {
                     System.out.println("8");
                     makePath(this, world.getCurrentLocation(), favoriteBurrow);
+                    favoriteBurrow = null;
                 }
             }
 
@@ -81,7 +80,8 @@ public class Rabbit extends Animals {
                 //DENNE METODE OPVÆKKER KANIN FRA DE DØDE EFTER DEN ER DØD AF SULT...
                 //world.setTile(this.location, this);
                 System.out.println("Rabbit has awoken at this location: " + this.location);
-                wakeUp(this.location);
+                wakeUp(favoriteBurrow);
+                Burrow.leaveBurrow(this);
 
                 //VIL GERNE GØRE SÅLEDES, AT VI IKKE BEHØVER AT SKRIVE "ELSE" MEN, HVIS JEG IKKE GØR DET HER, SÅ LAVER DEN ET ELLER ANDET
                 //MÆRKELIGT SORT MAGI, HVOR DEN BEVÆGER SIG, SELVOM DEN IKKE ER SAT IND I VERDEN - "SPØGELSE"

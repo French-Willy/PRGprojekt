@@ -28,19 +28,13 @@ public class Burrow extends Inanimate implements NonBlocking {
         return burrowSpace;
     }
 
-    public void leaveBurrow(Rabbit rabbit) {
-        for (Rabbit rabbitname : burrowSpace) {
-            if (rabbit == rabbitname) {
-                burrowSpace.remove(rabbitname);
-
-            }
-        }
-        burrowSpace.remove(0);
+    public static void leaveBurrow(Rabbit rabbit) {
+        burrowSpace.remove(rabbit);
     }
 
-    public static boolean getCheckFullBurrow(Burrow burrow) {
+    public static boolean getCheckFullBurrow(Object burrow) {
         boolean hasSpace = false;
-        if (burrow.burrowSpace.size() < 4) {
+        if (burrowSpace.size() <3) {
             return true;
         }
         else {
