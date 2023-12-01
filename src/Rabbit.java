@@ -1,5 +1,4 @@
 import itumulator.world.Location;
-import itumulator.world.NonBlocking;
 import itumulator.world.World;
 
 import java.util.ArrayList;
@@ -24,7 +23,33 @@ public class Rabbit extends Animals {
         if (world.getEntities().get(this) != null && world.isNight()) {
             /*world.remove(this);
             System.out.println("Rabbit has fallen asleep at this location: " + this.location);*/
-            Dig();
+
+            if (favoriteBurrow == null) {
+                if (findAllEmptyBurrows() == null) {
+                    Dig();
+
+                } else {
+                    //****** TJEK METODE I BUNDEN FOR AT FORSTÅ*****
+                   Location locationBurrow = getClosestBurrow(findAllEmptyBurrows());
+                    while(locationBurrow != this.location){
+
+                        //LAV PATHING TIL LOCATION
+                    }
+
+                    //Når kaninen er på hullet, skal den bare removes og det kalder en metode i Burrow:
+                    //enterBurrow skal sige, at Burrow nu indeholder
+                    if(this.location == locationBurrow) {
+                        Burrow.enterBurrow(this, (Burrow) world.getTile(locationBurrow));
+                        world.remove(this);
+                        favoriteBurrow = locationBurrow;
+                    }
+
+                }
+            } else if (favoriteBurrow != null){
+                while(favoriteBurrow != this.location){
+                    //LAV PATHING TIL "favoriteBurrow".
+                }
+            }
         } else if (world.isDay() && world.getEntities().get(this) == null) {
             //DENNE METODE OPVÆKKER KANIN FRA DE DØDE EFTER DEN ER DØD AF SULT...
             //world.setTile(this.location, this);
@@ -41,28 +66,33 @@ public class Rabbit extends Animals {
         }
     }
 
-    public void move() {
-        if (age > 1 || hunger < 3) {
-            if(timeCount % 2 == 0){
-            this.location = world.getLocation(this);
-            Set<Location> neighbours = world.getEmptySurroundingTiles(this.location);
-            List<Location> list = new ArrayList<>(neighbours);
-            int randomNum = ThreadLocalRandom.current().nextInt(0, list.size());
-            Location l = list.get(randomNum);
-            world.move(this, l);
-            this.location = world.getLocation(this);
-            seekFood(Grass.class);
-            }
-        } else{
-            this.location = world.getLocation(this);
-            Set<Location> neighbours = world.getEmptySurroundingTiles(this.location);
-            List<Location> list = new ArrayList<>(neighbours);
-            int randomNum = ThreadLocalRandom.current().nextInt(0, list.size());
-            Location l = list.get(randomNum);
-            world.move(this, l);
-            this.location = world.getLocation(this);
-            seekFood(Grass.class);
 
+    public void move() {
+        if (world.getEmptySurroundingTiles(this.location).isEmpty()) {
+        
+        } else {
+            if (age > 1 || hunger < 3) {
+                if (timeCount % 2 == 0) {
+                    this.location = world.getLocation(this);
+                    Set<Location> neighbours = world.getEmptySurroundingTiles(this.location);
+                    List<Location> list = new ArrayList<>(neighbours);
+                    int randomNum = ThreadLocalRandom.current().nextInt(0, list.size());
+                    Location l = list.get(randomNum);
+                    world.move(this, l);
+                    this.location = world.getLocation(this);
+                    seekFood(Grass.class);
+                }
+            } else {
+                this.location = world.getLocation(this);
+                Set<Location> neighbours = world.getEmptySurroundingTiles(this.location);
+                List<Location> list = new ArrayList<>(neighbours);
+                int randomNum = ThreadLocalRandom.current().nextInt(0, list.size());
+                Location l = list.get(randomNum);
+                world.move(this, l);
+                this.location = world.getLocation(this);
+                seekFood(Grass.class);
+
+            }
         }
     }
 
@@ -125,6 +155,7 @@ public class Rabbit extends Animals {
             }
     }
 
+
     private void reproduction(World world) {
         if (age == 2 && this.oneChildOnly)
             for (Location tile : world.getSurroundingTiles()) {
@@ -152,6 +183,59 @@ public class Rabbit extends Animals {
 
                 }
             }
+
+    }
+
+
+    //DENNE METODE VIL FINDE ALLE HULLER HVOR DER ER PLADS TIL KANINEN
+    public ArrayList<Location> findAllEmptyBurrows() {
+        ArrayList<Location> allBurrowsLocation = new ArrayList<>();
+        ArrayList<Location> allEmptyBurrowsLocation = new ArrayList<>();
+
+        // Denne foreach-lykke vil kigge igennem alle entities på mappen, og bagefter se, om det er en Burrow class
+        //og så tilføje lokationen til arraylisten allBurrowsLocation.
+        for (Object x : world.getEntities().keySet()) {
+            if (x.getClass() == Burrow.class) {
+                allBurrowsLocation.add(world.getEntities().get(x));
+            }
+        }
+        if(allBurrowsLocation.isEmpty()){
+            return null;
+        }
+        //Denne foreach-lykke er lidt kompliceret.
+        //Vi kigger igennem alle lookationerne af burrowsene, og når vi kalder "world.getTile(x)" og vi caster den til
+        // at være en Burrow så vil checkFullBurrow-metoden fra Burrow-klassen tjekke hvilke Burrows har ledig plads,
+        // og tilføje dem til den anden arraylist "allEmptyBurrowsLocation".
+        for (Location x : allBurrowsLocation) {
+            if (Burrow.checkFullBurrow((Burrow) world.getTile(x))) {
+                allEmptyBurrowsLocation.add(x);
+            }
+        }
+        //Det kunne jo være, at der ikke var nogle huller der var ledige, så den returner null og så vil
+        //rabbit grave sit eget hul.
+        if (allEmptyBurrowsLocation.isEmpty()) {
+            return null;
+
+
+            //Returnerer ArrayList med burrows, hvor der er plads til kaninen.
+        } else {
+            return allEmptyBurrowsLocation;
+        }
+    }
+
+    //Denne metode er lavet til at modtage den Arrayliste, som kommer fra "findAllEmptyBurrows".
+    // Lige nu gør den ikke noget, men jeg tænker den skal |||||returnere, den burrow der er tættest på kaninen.|||||
+    // Kan være der skal lidt pathing til?.
+
+    public Location getClosestBurrow(ArrayList<Location> allBurrows) {
+        Location closestBurrow = null;
+
+        //Kig igennem et ArrayList med locations of find ud af, hvilken location der er tættest på, og så returner den.
+
+
+        return closestBurrow;
     }
 
 }
+
+
