@@ -8,7 +8,6 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Rabbit extends Animals {
     //Location home;
-    Location location;
     Location favoriteBurrow;
     boolean oneChildOnly;
 
@@ -70,7 +69,7 @@ public class Rabbit extends Animals {
     public void move() {
         this.location = world.getLocation(this);
         if (world.getEmptySurroundingTiles(this.location).isEmpty()) {
-        
+
         } else {
             if (age > 1 || hunger < 3) {
                 if (timeCount % 2 == 0) {
@@ -103,7 +102,6 @@ public class Rabbit extends Animals {
             world.delete((world.getNonBlocking(tile)));
 
             hunger = hunger + 4;
-            System.out.println("my hunger is now: " + hunger);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -148,7 +146,6 @@ public class Rabbit extends Animals {
             if (world.isTileEmpty(tile)) {
                 world.setTile(tile, this);
                 this.location = world.getLocation(this);
-                System.out.println("I THINK I woke up here: " + this.location);
                 break;
             } else {
 
