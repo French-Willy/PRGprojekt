@@ -12,7 +12,7 @@ public class fileReader {
 
 
     public void Reader() throws Exception {
-        File file = new File("data/InputFiles_UGE1/t1-1a.txt");
+        File file = new File("data/InputFiles_UGE1/t1-2b.txt");
         Scanner s = new Scanner(file);
 
 
