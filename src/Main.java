@@ -1,3 +1,4 @@
+import itumulator.display.utility.ImageResourceCache;
 import itumulator.executable.Program;
 import itumulator.world.World;
 import itumulator.world.Location;
@@ -20,7 +21,7 @@ public class Main {
 
 
         int size = file.worldsize_file;
-        int delay = 1000;
+        int delay = 800;
         int display_size = 800;
         Program p = new Program(size, display_size, delay);
         World world = p.getWorld();
@@ -45,11 +46,11 @@ public class Main {
         addAnimal("rabbit",world, animalAmount);
 
 
-        DisplayInformation di = new DisplayInformation(Color.RED);
-        DisplayInformation diGrass = new DisplayInformation(Color.GREEN);
-        DisplayInformation diRabbit = new DisplayInformation(Color.white);
-        DisplayInformation diBurrow = new DisplayInformation(Color.black);
-        DisplayInformation diBear = new DisplayInformation(Color.GRAY);
+        DisplayInformation di = new DisplayInformation(Color.RED,"steve",true);
+        DisplayInformation diGrass = new DisplayInformation(Color.GREEN, "grass1",true);
+        DisplayInformation diRabbit = new DisplayInformation(Color.white,"rabbit-large",false);
+        DisplayInformation diBurrow = new DisplayInformation(Color.black,"hole",false);
+        DisplayInformation diBear = new DisplayInformation(Color.GRAY, "bear",false);
 
         p.setDisplayInformation(Person.class, di);
         p.setDisplayInformation(Grass.class, diGrass);
@@ -61,7 +62,6 @@ public class Main {
         for (int i = 0; i < 50; i++) {
             p.simulate();
         }
-
     }
 
     public static void addGrass(World world, int grassAmount) {
@@ -70,7 +70,6 @@ public class Main {
         for (int i = 0; i < grassAmount; i++) {
             Grass grass = new Grass(0, world);
             Location spawn = new Location(ThreadLocalRandom.current().nextInt(0, world.getSize()), ThreadLocalRandom.current().nextInt(0, world.getSize()));
-
              while(world.containsNonBlocking(spawn) || !world.isTileEmpty(spawn)){
                 spawn = new Location(ThreadLocalRandom.current().nextInt(0, world.getSize()), ThreadLocalRandom.current().nextInt(0, world.getSize()));
              }
