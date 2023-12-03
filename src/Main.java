@@ -59,7 +59,7 @@ public class Main {
         p.setDisplayInformation(Bear.class, diBear);
 
         p.show(); // viser selve simulationen
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < 101; i++) {
             p.simulate();
         }
     }
