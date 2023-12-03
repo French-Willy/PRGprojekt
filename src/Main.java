@@ -33,7 +33,7 @@ public class Main {
         world.setTile(place, person);
         world.setTile(bearSpawn, bear);
 
-        System.out.println(file.inputLines);
+        //Adds the inputlist from the filereader into main
         for(ArrayList<String> spawnObject : file.inputLines){
             int min = Integer.parseInt(spawnObject.get(1));
             int max = Integer.parseInt(spawnObject.get(2));
