@@ -5,28 +5,29 @@ import java.util.*;
 
 public class fileReader {
     int worldsize_file;
-    String type;
-    protected ArrayList<String[]> inputLines;
-    int min;
-    int max;
-
-
+    public ArrayList<ArrayList<String>> inputLines = new ArrayList<>();
     public void Reader() throws Exception {
-        File file = new File("data/InputFiles_UGE1/t1-1a.txt");
+        File file = new File("data/InputFiles_UGE1/t1-1d.txt");
         Scanner s = new Scanner(file);
 
+        //The first line in every file is the world-size, so therefor it's easy to assign it as the first step.
+        worldsize_file = s.nextInt();
+        //Goes to the next line
+        s.nextLine();
 
-            worldsize_file = s.nextInt();
-            s.nextLine();
-            while (s.hasNext()){
-                inputLines.add(s.nextLine().split("\\W+"));
-            }
+        //Reads each line and inserts it in a arraylist in a arraylist.
+        while (s.hasNext()){
+            //Splits the sentence at " " & "-"
+            ArrayList<String> temp = new ArrayList<>(Arrays.asList(s.nextLine().split("\\W+")));
+            inputLines.add(temp);
+        }
 
-            for(int i = 0; i<inputLines.size(); i++){
-                if(inputLines.get(i).length==2){
-                    inputLines.get(i)[2] = inputLines.get(i)[1];
-                }
+        //If there is only one number to the assigned spawn object, then it sets the number for both min and max value.
+        for (ArrayList<String> inputLine : inputLines) {
+            if (inputLine.size() == 2) {
+                inputLine.add(inputLine.get(1));
             }
+        }
     }
 }
 

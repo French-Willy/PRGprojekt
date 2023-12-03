@@ -14,10 +14,10 @@ public class Main {
         fileReader file = new fileReader();
         try {
             file.Reader();
+            //file.getInputLines();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-
 
         int size = file.worldsize_file;
         int delay = 1000;
@@ -25,24 +25,21 @@ public class Main {
         Program p = new Program(size, display_size, delay);
         World world = p.getWorld();
 
-        /*
-        Type type = new Type(file.type);
-        type.spawn();
-
-         */
-
-
         Location place = new Location(0, 1);
         Location bearSpawn = new Location(3,3);
         Person person = new Person(place);
-        int grassAmount = ThreadLocalRandom.current().nextInt(3, 10);
-        int animalAmount = ThreadLocalRandom.current().nextInt(1, 4);
         Bear bear = new Bear(0, 10, world);
 
         world.setTile(place, person);
         world.setTile(bearSpawn, bear);
-        addGrass(world, grassAmount);
-        addAnimal("rabbit",world, animalAmount);
+
+        System.out.println(file.inputLines);
+        for(ArrayList<String> spawnObject : file.inputLines){
+            int min = Integer.parseInt(spawnObject.get(1));
+            int max = Integer.parseInt(spawnObject.get(2));
+            int spawnObjectAmount = ThreadLocalRandom.current().nextInt(min,max + 1);
+            addObject(spawnObject.get(0),world,spawnObjectAmount);
+        }
 
 
         DisplayInformation di = new DisplayInformation(Color.RED);
@@ -64,34 +61,24 @@ public class Main {
 
     }
 
-    public static void addGrass(World world, int grassAmount) {
-        //HashMap<Location, Grass> allGrass = new HashMap<>();
-        //Random r = new Random();
-        for (int i = 0; i < grassAmount; i++) {
-            Grass grass = new Grass(0, world);
-            Location spawn = new Location(ThreadLocalRandom.current().nextInt(0, world.getSize()), ThreadLocalRandom.current().nextInt(0, world.getSize()));
-
-             while(world.containsNonBlocking(spawn) || !world.isTileEmpty(spawn)){
-                spawn = new Location(ThreadLocalRandom.current().nextInt(0, world.getSize()), ThreadLocalRandom.current().nextInt(0, world.getSize()));
-             }
-            world.setTile(spawn, grass);
-        }
-    }
-    public static void addAnimal(String animalObject, World world, int animalAmount) throws Exception {
-        for (int i = 0; i < animalAmount; i++) {
+    //Method for spawning object on random tiles. Cheecks it spawns on empty tiles
+    //Uses a switch case system that spawns the specific object based on the string thats asigned.
+    public static void addObject(String stringSpwanObject, World world, int spawnObjectAmount) throws Exception {
+        for (int i = 0; i < spawnObjectAmount; i++) {
             Location spawn = new Location(ThreadLocalRandom.current().nextInt(0, world.getSize()), ThreadLocalRandom.current().nextInt(0, world.getSize()));
 
             while(world.containsNonBlocking(spawn) || !world.isTileEmpty(spawn)){
                 spawn = new Location(ThreadLocalRandom.current().nextInt(0, world.getSize()), ThreadLocalRandom.current().nextInt(0, world.getSize()));
             }
-            System.out.println(spawn);
-
-            switch(animalObject) {
+            switch(stringSpwanObject) {
                 case "rabbit":
                     world.setTile(spawn, new Rabbit(0,5,world));
                     break;
+                case "grass":
+                    world.setTile(spawn, new Grass(0,world));
+                    break;
                 default:
-                    throw new Exception("no animalType");
+                    throw new Exception("no spawn type");
             }
         }
     }
