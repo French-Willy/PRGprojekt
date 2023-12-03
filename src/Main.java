@@ -41,12 +41,12 @@ public class Main {
             addObject(spawnObject.get(0),world,spawnObjectAmount);
         }
 
+        DisplayInformation di = new DisplayInformation(Color.RED,"steve",true);
+        DisplayInformation diGrass = new DisplayInformation(Color.GREEN, "grass1",true);
+        DisplayInformation diRabbit = new DisplayInformation(Color.white,"rabbit-large",false);
+        DisplayInformation diBurrow = new DisplayInformation(Color.black,"hole",false);
+        DisplayInformation diBear = new DisplayInformation(Color.GRAY, "bear",false);
 
-        DisplayInformation di = new DisplayInformation(Color.RED);
-        DisplayInformation diGrass = new DisplayInformation(Color.GREEN);
-        DisplayInformation diRabbit = new DisplayInformation(Color.white);
-        DisplayInformation diBurrow = new DisplayInformation(Color.black);
-        DisplayInformation diBear = new DisplayInformation(Color.GRAY);
 
         p.setDisplayInformation(Person.class, di);
         p.setDisplayInformation(Grass.class, diGrass);
