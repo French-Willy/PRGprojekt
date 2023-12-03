@@ -6,10 +6,9 @@ import java.util.ArrayList;
 
 public class Burrow extends Inanimate implements NonBlocking {
     Location location;
-    ArrayList<Rabbit> burrowSpace;
+    static ArrayList<Rabbit> burrowSpace;
     int maxSpace;
     int burrowBed;
-
 
 
     public Burrow(World world) {
@@ -17,33 +16,35 @@ public class Burrow extends Inanimate implements NonBlocking {
         this.burrowSpace = new ArrayList<>();
     }
 
-    public static void enterBurrow(Rabbit rabbit, Burrow burrow) {
-        if(burrow.burrowSpace.size() < 3) {
-            burrow.burrowSpace.add(rabbit);
-        } else if(burrow.burrowSpace.size() == 3){
+    public static void enterBurrow(Rabbit rabbit, Object burrow) {
+        if (burrowSpace.size() < 3) {
+            burrowSpace.add(rabbit);
+        } else if (burrowSpace.size() == 3) {
 
         }
     }
 
-    public void leaveBurrow(Rabbit rabbit) {
-        for(Rabbit rabbitname : burrowSpace){
-            if(rabbit == rabbitname){
-                burrowSpace.remove(rabbitname);
-            }
-        }
-        burrowSpace.remove(0);
+    public ArrayList<Rabbit> getBurrowSpace(Object Burrow) {
+        return burrowSpace;
     }
 
-    public static boolean checkFullBurrow(Burrow burrow) {
+    public static void leaveBurrow(Rabbit rabbit) {
+        burrowSpace.remove(rabbit);
+    }
+
+    public static boolean getCheckFullBurrow(Object burrow) {
         boolean hasSpace = false;
-        if(burrow.burrowSpace.size() < 3){
-            hasSpace = true;
+        if (burrowSpace.size() <3) {
+            return true;
         }
-        return hasSpace;
+        else {
+            return false;
+        }
     }
+}
     //hello
     //hello back
     //test
     //tooBad
     //hello agiain
-}
+
