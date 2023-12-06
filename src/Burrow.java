@@ -2,38 +2,48 @@ import itumulator.world.Location;
 import itumulator.world.NonBlocking;
 import itumulator.world.World;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 
 public class Burrow extends Inanimate implements NonBlocking {
     Location location;
-    static ArrayList<Rabbit> burrowSpace;
+    HashSet<Rabbit> burrowSpace;
+
+
     int maxSpace;
     int burrowBed;
 
 
-    public Burrow(World world) {
+    public Burrow(World world, HashSet<Rabbit> burrowSpace) {
         super(world);
-        this.burrowSpace = new ArrayList<>();
+        this.burrowSpace = burrowSpace;
     }
 
-    public static void enterBurrow(Rabbit rabbit, Object burrow) {
-        if (burrowSpace.size() < 3) {
+    public static void createNewBurrow(World world, Location location) {
+        HashSet<Rabbit> burrowSpace = new HashSet<>();
+        world.setTile(location, new Burrow(world,burrowSpace));
+        System.out.println("burrow lavet.... pog ");
+    }
+
+    public void enterBurrow(Rabbit rabbit, Object burrow) {
+        if (burrowSpace.isEmpty() || burrowSpace.size() < 3) {
             burrowSpace.add(rabbit);
-        } else if (burrowSpace.size() == 3) {
+        } else if (burrowSpace.size() == 4) {
 
         }
     }
 
-    public ArrayList<Rabbit> getBurrowSpace(Object Burrow) {
+    public HashSet<Rabbit> getBurrowSpace(Object Burrow) {
         return burrowSpace;
     }
 
-    public static void leaveBurrow(Rabbit rabbit) {
+    public  void leaveBurrow(Rabbit rabbit) {
         burrowSpace.remove(rabbit);
     }
 
-    public static boolean getCheckFullBurrow(Object burrow) {
+    public  boolean getCheckFullBurrow(Object burrow) {
         boolean hasSpace = false;
+        //System.out.println(burrowSpace + "kaniner i hullet");
+        //System.out.println(burrowSpace.size() +" plads i hullet");
         if (burrowSpace.size() <3) {
             return true;
         }

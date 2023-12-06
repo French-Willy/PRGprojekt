@@ -19,8 +19,8 @@ public class Main {
             System.out.println(e.getMessage());
         }
 
-        int size = file.worldsize_file;
-        int delay = 1000;
+        int size = 5;
+        int delay = 800;
         int display_size = 800;
         Program p = new Program(size, display_size, delay);
         World world = p.getWorld();
@@ -31,7 +31,7 @@ public class Main {
         Bear bear = new Bear(0, 10, world);
 
         world.setTile(place, person);
-        world.setTile(bearSpawn, bear);
+     //   world.setTile(bearSpawn, bear);
 
         //Adds the inputlist from the filereader into main
         for(ArrayList<String> spawnObject : file.inputLines){
@@ -55,24 +55,23 @@ public class Main {
         p.setDisplayInformation(Bear.class, diBear);
 
         p.show(); // viser selve simulationen
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < 101; i++) {
             p.simulate();
         }
-
     }
 
     //Method for spawning object on random tiles. Cheecks it spawns on empty tiles
     //Uses a switch case system that spawns the specific object based on the string thats asigned.
-    public static void addObject(String stringSpwanObject, World world, int spawnObjectAmount) throws Exception {
-        for (int i = 0; i < spawnObjectAmount; i++) {
+    public static void addObject(String stringSpawnObject, World world, int spawnObjectAmount) throws Exception {
+        for (int i = 0; i < 2; i++) {
             Location spawn = new Location(ThreadLocalRandom.current().nextInt(0, world.getSize()), ThreadLocalRandom.current().nextInt(0, world.getSize()));
 
             while(world.containsNonBlocking(spawn) || !world.isTileEmpty(spawn)){
                 spawn = new Location(ThreadLocalRandom.current().nextInt(0, world.getSize()), ThreadLocalRandom.current().nextInt(0, world.getSize()));
             }
-            switch(stringSpwanObject) {
+            switch(stringSpawnObject) {
                 case "rabbit":
-                    world.setTile(spawn, new Rabbit(0,5,world));
+                    world.setTile(spawn, new Rabbit(0,5,world,null));
                     break;
                 case "grass":
                     world.setTile(spawn, new Grass(0,world));
