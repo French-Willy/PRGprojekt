@@ -9,8 +9,9 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Bear extends Animals {
 
-    public Bear(int age, int hunger, World world) {
-        super(age, hunger, world);
+    public Bear(int age, int hunger, int hp, World world) {
+        super(age, hunger, hp, world);
+        this.atk = 10;
     }
 
 
@@ -45,20 +46,24 @@ public class Bear extends Animals {
 
     public void seekFood(HashSet<Class> surroundingAnimals) {
         if (hunger < 2) {
-
-            if (surroundingAnimals.contains(Rabbit.class) || surroundingAnimals.contains(Wolf.class)) {
+            if (surroundingAnimals.contains(Wolf.class)) {
                 for (Location tile : world.getSurroundingTiles()) {
-
                     if (world.getTile(tile) != null && world.getTile(tile).getClass() == Wolf.class) {
-                        eat(tile);
-                        break;
-
-                    } else if(world.getTile(tile) != null && world.getTile(tile).getClass() == Rabbit.class){
                         eat(tile);
                         break;
                     }
                 }
+
+            } else if (surroundingAnimals.contains(Rabbit.class)) {
+                for (Location tile : world.getSurroundingTiles()) {
+                    if(world.getTile(tile) != null && world.getTile(tile).getClass() == Rabbit.class){
+                        eat(tile);
+                        break;
+                    }
+                }
+
             }
+
         } else if(hunger < 5){
             for (Location tile : world.getSurroundingTiles()){
                 if(world.getTile(tile) != null && world.getTile(tile).getClass() == Rabbit.class){
@@ -81,11 +86,15 @@ public class Bear extends Animals {
 
             public void eat (Location tile){
                 try {
-                    // if (world.getNonBlocking(this.location).getClass() == Grass.class) {
-                    world.delete((world.getTile(tile)));
+                    if(world.getTile(tile).getClass() == Rabbit.class) {
+                        world.delete((world.getTile(tile)));
+                        hunger = hunger + 3;
+                        System.out.println("my hunger is now: " + hunger);
+                    }else if (world.getTile(tile).getClass() == Wolf.class){
+                        world.delete((world.getTile(tile)));
+                        hunger = hunger + 5;
+                    }
 
-                    hunger = hunger + 4;
-                    System.out.println("my hunger is now: " + hunger);
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }

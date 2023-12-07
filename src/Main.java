@@ -81,18 +81,21 @@ public class Main {
             }
             switch (stringSpwanObject) {
                 case "rabbit":
-                    world.setTile(spawn, new Rabbit(0, 5, world));
+                    world.setTile(spawn, new Rabbit(0, 5,5, world));
                     break;
                 case "grass":
                     world.setTile(spawn, new Grass(0, world));
                     break;
+                case "wolf":
+                    world.setTile(spawn, new Wolf(0, 5, 20, world));
+                    break;
                 case "bear": {
                     if (speceficSpawn == null){
-                        world.setTile(spawn, new Bear(0, 10, world));
+                        world.setTile(spawn, new Bear(0, 10, 50, world));
                         System.out.println("random Spawn is : " + spawn);
                     }
                     else{
-                        world.setTile(speceficSpawn, new Bear(0, 10, world));
+                        world.setTile(speceficSpawn, new Bear(0, 10, 50, world));
                         System.out.println("specefic Spawn is : " + speceficSpawn);
                     }
                     break;

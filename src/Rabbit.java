@@ -9,11 +9,10 @@ public class Rabbit extends Animals {
     //Location home;
     Location favoriteBurrow;
     boolean oneChildOnly;
-    HashMap<Object, Location> favoriteBurrowMap;
     Location lastPosition;
 
-    public Rabbit(int age, int hunger, World world, Location favoriteBurrow) {
-        super(age, hunger, world);
+    public Rabbit(int age, int hunger, int hp, World world) {
+        super(age, hunger, hp, world);
         this.oneChildOnly = true;
         this.favoriteBurrow = null;
 
@@ -21,6 +20,9 @@ public class Rabbit extends Animals {
 
     @Override
     public void act(World world) {
+        if (this.getHealth() < 0) {
+            die();
+        }
         int counter = 0;
         super.act(world);
        // System.out.println(favoriteBurrow + " favorit hul");
@@ -160,7 +162,7 @@ public class Rabbit extends Animals {
                 // if (world.getNonBlocking(this.location).getClass() == Grass.class) {
                 world.delete((world.getNonBlocking(tile)));
 
-                hunger = hunger + 4;
+                hunger = hunger + 3;
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
@@ -171,15 +173,14 @@ public class Rabbit extends Animals {
             if (hunger < 5) {
                 for (Location tile : world.getSurroundingTiles()) {
                     if (world.getTile(tile) != null && world.getTile(tile).getClass() == type) {
-                        if (world.isTileEmpty(tile)) {
+                        eat(tile);
                             world.move(this, tile);
-                            eat(tile);
                             break;
                         }
                     }
                 }
             }
-        }
+
 
         public void Dig (Location location) {
         if (world.getTile(location) != null) {
@@ -195,9 +196,7 @@ public class Rabbit extends Animals {
             }
 
 
-        } //else if (favoriteBurrow != null) {
-                //findFavoriteHole();
-                // }
+        }
     }
 
 
@@ -215,7 +214,7 @@ public class Rabbit extends Animals {
                         System.out.println("hjælp");
                         if (world.getTile(tile).getClass() == Rabbit.class && world.getTile(tile) != this) {
                             System.out.println("jeg har født");
-                            Rabbit rabbitChild = new Rabbit(0, 5, world,null);
+                            Rabbit rabbitChild = new Rabbit(0, 5, 5,world);
                             Set<Location> neighbours = world.getEmptySurroundingTiles(this.location);
                             List<Location> list = new ArrayList<>(neighbours);
                             if (list.size() <= 0) {

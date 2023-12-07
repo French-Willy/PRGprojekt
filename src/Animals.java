@@ -14,10 +14,13 @@ public class Animals implements Actor {
     protected String type;
     protected World world;
     protected Location location;
+    protected int hp;
+    protected int atk;
 
-    public Animals(int age, int hunger, World world) {
+    public Animals(int age, int hunger, int hp, World world) {
         this.age = age;
         this.hunger = hunger;
+        this.hp = hp;
         this.world = world;
     }
 
@@ -32,27 +35,12 @@ public class Animals implements Actor {
         }
     }
 
-    /*public void seekFood(Object object) {
-        for (Location tile : world.getSurroundingTiles()) {
-                if (world.getTile(tile).getClass() == object.getClass()) {
-                    world.move(this, tile);
-                    eating(object);
-                }
-        }
-    }*/
-
-
     public void sleep() {
         world.remove(this);
     }
 
     public void die() {
         world.delete(this);
-    }
-
-
-    public void reproduce() {
-
     }
 
     //Gør det som alle dyr har tilfælles.
@@ -71,8 +59,21 @@ public class Animals implements Actor {
             System.out.println("I died of hunger");
         }
     }
+    public void takeDamage(int attack){
+        hp = hp-attack;
+    }
 
+    public int getHealth(){
+        return hp;
+    }
 
+    public boolean dead(Object object){
+        if (world.getEntities().get(object) == null){
+            return true;
+
+        }else
+            return false;
+    }
 }
 
 
