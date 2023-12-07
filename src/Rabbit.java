@@ -128,7 +128,7 @@ public class Rabbit extends Animals {
                     System.out.println("hjælp");
                     if (world.getTile(tile).getClass() == Rabbit.class && world.getTile(tile) != this) {
                         System.out.println("jeg har født");
-                        Rabbit rabbitChild = new Rabbit(0, 5, world);
+                        Rabbit rabbitChild = new Rabbit(0, 5, 5,world);
                         Set<Location> neighbours = world.getEmptySurroundingTiles(this.location);
                         List<Location> list = new ArrayList<>(neighbours);
                         if (list.size() <= 0) {
@@ -216,9 +216,3 @@ public class Rabbit extends Animals {
                 //MÆRKELIGT SORT MAGI, HVOR DEN BEVÆGER SIG, SELVOM DEN IKKE ER SAT IND I VERDEN - "SPØGELSE"
                 //OG DET DER KAN SKE ER, AT 2 FORSKELLIGE "SPØGELSER" KAN SÆTTE SIG PÅ SAMME TILE, OG NÅR DE SÅ ET TICK SENERE SPAWNER IND
                 // SÅ KOMMER DER SELVFØLGELIG EN FEJL FORDI 2 BLOCKING ELEMENTS SPAWNER PÅ HINANDEN
-            } else if (world.isDay()) {
-                move();
-                reproduction(world);
-            }
-        }
- */
