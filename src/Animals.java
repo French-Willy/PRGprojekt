@@ -72,7 +72,54 @@ public class Animals implements Actor {
         }
     }
 
+    public Object findObject(Object object, Class type) {
+            for (Object objects : world.getEntities().keySet()) {
+                if (object.getClass() == type) {
+                    return objects;
+                }
+            }
+            return null;
+    }
+    public double calculateDistance (Location initial, Location target){
+        double x;
+        double y;
+        if (initial.getX() == target.getX()) {
+            x = 0;
+        } else if (initial.getX() > target.getY()) {
+            x = (initial.getX() - target.getX());
+            x = x * x;
+        } else {
+            x = (-initial.getX() + target.getX());
+            x = x * x;
+        }
+        if (initial.getY() == target.getY()) {
+            y = 0;
+        } else if (initial.getY() > target.getY()) {
+            y = (initial.getY() - target.getY());
+            y = y * y;
+        } else {
+            y = (-initial.getY() + target.getY());
+            y = y * y;
+        }
+        double distance = Math.sqrt(x + y);
+        return distance;
+    }
 
+    public void makePath (Object object, Location initial, Location target){
+        double shortestDistance = calculateDistance(world.getCurrentLocation(), target);
+        Location closestTile = null;
+
+        if (initial == target) {
+        } else {
+            for (Location emptyTile : world.getEmptySurroundingTiles(initial)) {
+                while (calculateDistance(emptyTile, target) < shortestDistance) {
+                    shortestDistance = calculateDistance(emptyTile, target);
+                    closestTile = emptyTile;
+                }
+            }
+            if (closestTile != null) {
+                world.move(object, closestTile);
+            }
+        }
+    }
 }
-
-

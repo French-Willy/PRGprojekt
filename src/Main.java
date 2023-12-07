@@ -61,7 +61,7 @@ public class Main {
         p.setDisplayInformation(Bear.class, diBear);
 
         p.show(); // viser selve simulationen
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < 101; i++) {
             p.simulate();
         }
 
@@ -81,10 +81,14 @@ public class Main {
             }
             switch (stringSpwanObject) {
                 case "rabbit":
-                    world.setTile(spawn, new Rabbit(0, 5, world));
+                    world.setTile(spawn, new Rabbit(0, 5, world ));
                     break;
                 case "grass":
                     world.setTile(spawn, new Grass(0, world));
+                    break;
+                case "burrow":
+                    HashSet<Rabbit> burrowSpace = new HashSet<>();
+                    world.setTile(spawn, new Burrow( world,burrowSpace));
                     break;
                 case "bear": {
                     if (speceficSpawn == null){

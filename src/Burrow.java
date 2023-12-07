@@ -25,7 +25,7 @@ public class Burrow extends Inanimate implements NonBlocking {
     }
 
     public void enterBurrow(Rabbit rabbit, Object burrow) {
-        if (burrowSpace.isEmpty() || burrowSpace.size() < 3) {
+        if (burrowSpace.isEmpty() || burrowSpace.size() < 5) {
             burrowSpace.add(rabbit);
         } else if (burrowSpace.size() == 4) {
 
@@ -44,7 +44,7 @@ public class Burrow extends Inanimate implements NonBlocking {
         boolean hasSpace = false;
         //System.out.println(burrowSpace + "kaniner i hullet");
         //System.out.println(burrowSpace.size() +" plads i hullet");
-        if (burrowSpace.size() <3) {
+        if (burrowSpace.size() <5) {
             return true;
         }
         else {
