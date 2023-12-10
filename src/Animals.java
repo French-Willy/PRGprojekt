@@ -14,10 +14,13 @@ public class Animals implements Actor {
     protected String type;
     protected World world;
     protected Location location;
+    protected int hp;
+    protected int atk;
 
-    public Animals(int age, int hunger, World world) {
+    public Animals(int age, int hunger, int hp, World world) {
         this.age = age;
         this.hunger = hunger;
+        this.hp = hp;
         this.world = world;
     }
 
@@ -25,7 +28,7 @@ public class Animals implements Actor {
         timeCount++;
         if (timeCount % 20 == 0) {
             age++;
-            System.out.println("Jeg har fødselsdag, før var jeg: " + (age-1) + " nu er jeg: " + age);
+            System.out.println("Jeg har fødselsdag, før var jeg: " + (age - 1) + " nu er jeg: " + age);
         }
         if (age == 10) {
             die();
@@ -58,7 +61,7 @@ public class Animals implements Actor {
     //Gør det som alle dyr har tilfælles.
     @Override
     public void act(World world) {
-       if (world.isDay()) {
+        if (world.isDay()) {
             hunger--;
             //checkHunger();
         }
@@ -72,15 +75,20 @@ public class Animals implements Actor {
         }
     }
 
-    public Object findObject(Object object, Class type) {
-            for (Object objects : world.getEntities().keySet()) {
-                if (object.getClass() == type) {
-                    return objects;
-                }
-            }
-            return null;
+    public void takeDamage(int attack) {
+        hp = hp - attack;
     }
-    public double calculateDistance (Location initial, Location target){
+
+    public Object findObject(Object object, Class type) {
+        for (Object objects : world.getEntities().keySet()) {
+            if (object.getClass() == type) {
+                return objects;
+            }
+        }
+        return null;
+    }
+
+    public double calculateDistance(Location initial, Location target) {
         double x;
         double y;
         if (initial.getX() == target.getX()) {
@@ -105,7 +113,20 @@ public class Animals implements Actor {
         return distance;
     }
 
-    public void makePath (Object object, Location initial, Location target){
+    public int getHealth() {
+        return hp;
+    }
+
+    public boolean dead(Object object) {
+        if (world.getEntities().get(object) == null) {
+            return true;
+
+        } else
+            return false;
+    }
+
+
+    public void makePath(Object object, Location initial, Location target) {
         double shortestDistance = calculateDistance(world.getCurrentLocation(), target);
         Location closestTile = null;
 

@@ -12,9 +12,8 @@ public class Rabbit extends Animals {
     HashMap<Object, Location> favoriteBurrowMap;
     Location lastPosition;
 
-
-    public Rabbit(int age, int hunger, World world) {
-        super(age, hunger, world);
+    public Rabbit(int age, int hunger, int hp, World world) {
+        super(age, hunger, hp, world);
         this.oneChildOnly = true;
         this.homeBurrow = null;
 
@@ -22,6 +21,10 @@ public class Rabbit extends Animals {
 
     @Override
     public void act(World world) {
+        if (this.getHealth() < 0) {
+            die();
+        }
+        int counter = 0;
         super.act(world);
 
         seekShelter();
@@ -75,27 +78,27 @@ public class Rabbit extends Animals {
             // if (world.getNonBlocking(this.location).getClass() == Grass.class) {
             world.delete((world.getNonBlocking(tile)));
 
-            hunger = hunger + 4;
-        } catch (Exception e) {
+                hunger = hunger + 3;
+            } catch (Exception e) {
                 System.out.println(e.getMessage());
         }
     }
 
 
-    public void seekFood (Class type){
-        if (hunger < 5) {
-            for (Location tile : world.getSurroundingTiles()) {
-                if (world.getTile(tile) != null && world.getTile(tile).getClass() == type) {
-                    if (world.isTileEmpty(tile)) {
-                        world.move(this, tile);
+        public void seekFood (Class type){
+            if (hunger < 5) {
+                for (Location tile : world.getSurroundingTiles()) {
+                    if (world.getTile(tile) != null && world.getTile(tile).getClass() == type) {
                         eat(tile);
-                        break;
+                            world.move(this, tile);
+                            break;
+                        }
                     }
                 }
             }
-        }
-    }
-    public void Dig (Location location) {
+
+
+        public void Dig (Location location) {
         if (world.getTile(location) != null) {
             try {
                 if (world.getNonBlocking(location).getClass() == Grass.class) {
@@ -107,6 +110,8 @@ public class Rabbit extends Animals {
             if (location != null) {
                 Burrow.createNewBurrow(world, world.getEntities().get(this));
             }
+
+
         }
     }
     public void wakeUp (Location location) {
@@ -123,7 +128,7 @@ public class Rabbit extends Animals {
                     System.out.println("hjælp");
                     if (world.getTile(tile).getClass() == Rabbit.class && world.getTile(tile) != this) {
                         System.out.println("jeg har født");
-                        Rabbit rabbitChild = new Rabbit(0, 5, world);
+                        Rabbit rabbitChild = new Rabbit(0, 5, 5,world);
                         Set<Location> neighbours = world.getEmptySurroundingTiles(this.location);
                         List<Location> list = new ArrayList<>(neighbours);
                         if (list.size() <= 0) {
@@ -206,3 +211,8 @@ public class Rabbit extends Animals {
     }
 }
 
+
+                //VIL GERNE GØRE SÅLEDES, AT VI IKKE BEHØVER AT SKRIVE "ELSE" MEN, HVIS JEG IKKE GØR DET HER, SÅ LAVER DEN ET ELLER ANDET
+                //MÆRKELIGT SORT MAGI, HVOR DEN BEVÆGER SIG, SELVOM DEN IKKE ER SAT IND I VERDEN - "SPØGELSE"
+                //OG DET DER KAN SKE ER, AT 2 FORSKELLIGE "SPØGELSER" KAN SÆTTE SIG PÅ SAMME TILE, OG NÅR DE SÅ ET TICK SENERE SPAWNER IND
+                // SÅ KOMMER DER SELVFØLGELIG EN FEJL FORDI 2 BLOCKING ELEMENTS SPAWNER PÅ HINANDEN
