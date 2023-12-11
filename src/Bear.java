@@ -66,7 +66,7 @@ public class Bear extends Animals {
             if (surroundingFood.contains(Wolf.class)) {
                 for (Location tile : world.getSurroundingTiles()) {
                     if (world.getTile(tile) != null && world.getTile(tile).getClass() == Wolf.class) {
-                        attack(tile);
+                        attack(this, (Animals) world.getTile(tile));
                         break;
                     }
                 }
@@ -74,7 +74,7 @@ public class Bear extends Animals {
             } else if (surroundingFood.contains(Rabbit.class)) {
                 for (Location tile : world.getSurroundingTiles()) {
                     if (world.getTile(tile) != null && world.getTile(tile).getClass() == Rabbit.class) {
-                        attack(tile);
+                        attack(this, (Animals) world.getTile(tile));
                         break;
                     }
                 }
@@ -91,11 +91,10 @@ public class Bear extends Animals {
                     }
                 }
             }
-
         } else if (hunger < 5) {
             for (Location tile : world.getSurroundingTiles()) {
                 if (world.getTile(tile) != null && world.getTile(tile).getClass() == Rabbit.class) {
-                    attack(tile);
+                    attack(this, (Animals) world.getTile(tile));
                     break;
                 }
             }
@@ -112,6 +111,7 @@ public class Bear extends Animals {
         seekFood(surroundingFood);
     }
 
+    /*
     public void attack(Location tile) {
         try {
             if (world.getTile(tile).getClass() == Rabbit.class) {
@@ -121,8 +121,6 @@ public class Bear extends Animals {
                     eat(3);
                     world.delete(rabbit);
                 }
-
-
             } else if (world.getTile(tile).getClass() == Wolf.class) {
                 Wolf wolf = (Wolf) world.getTile(tile);
                 wolf.takeDamage(this.atk);
@@ -137,6 +135,7 @@ public class Bear extends Animals {
         }
     }
 
+ */
     public void eatBerries(Bush bush) {
         bush.hasBerries = false;
         eat(1);

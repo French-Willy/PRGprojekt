@@ -29,8 +29,13 @@ public class Wolf extends Animals{
             seekCave();
 
         } else if (world.isDay() && world.getEntities().get(this) == null) {
-            System.out.println("Wolf has awoken at this location: " + this.location);
-
+            System.out.println("vågn op " + lastPosition);
+            if (lastPosition != null ){
+                wakeUp(lastPosition);
+            }
+            else {
+                wakeUp(this.location);
+            }
         } else if (world.isDay()) {
             move();
         }
@@ -54,6 +59,7 @@ public class Wolf extends Animals{
                 }
             }
             else {
+                System.out.println("hejeheewe");
                 this.location = world.getLocation(this);
                 Set<Location> neighbours = world.getEmptySurroundingTiles(this.location);
                 List<Location> list = new ArrayList<>(neighbours);
@@ -99,9 +105,11 @@ public class Wolf extends Animals{
         else if (hunger < 5 && counter == 0) {
             for (Object object : world.getEntities().keySet()) {
                 if (object.getClass() == Rabbit.class) {
-                    if (calculateDistance(world.getEntities().get(this), world.getEntities().get(object)) < closestPreyDistance) {
-                        closestPreyDistance = calculateDistance(world.getEntities().get(this), world.getEntities().get(object));
-                        closestPrey = object;
+                    if (world.getEntities().get(object) != null) {
+                        if (calculateDistance(world.getEntities().get(this), world.getEntities().get(object)) < closestPreyDistance) {
+                            closestPreyDistance = calculateDistance(world.getEntities().get(this), world.getEntities().get(object));
+                            closestPrey = object;
+                        }
                     }
                 }
             }
@@ -149,7 +157,12 @@ public class Wolf extends Animals{
             }
         }
     }
-
+    public void wakeUp (Location location) {
+        if (world.isTileEmpty(location)) {
+            System.out.println();
+            world.setTile(location, this);
+        }
+    }
 
     public void seekCave(){
         int counter = 0;

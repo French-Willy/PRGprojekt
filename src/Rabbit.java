@@ -22,7 +22,7 @@ public class Rabbit extends Animals {
     @Override
     public void act(World world) {
         if (this.getHealth() < 0) {
-            die();
+            die(this);
         }
         int counter = 0;
         super.act(world);

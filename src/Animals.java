@@ -32,7 +32,7 @@ public class Animals implements Actor {
             age++;
         }
         if (age == 10) {
-            die();
+            die(this);
         }
     }
 
@@ -47,9 +47,10 @@ public class Animals implements Actor {
         }
     }
 
-    public void die() {
-        world.setTile(this.location, new Carcass(animalMeatAmount,world));
-        world.delete(this);
+    public void die(Animals animal) {
+        Location location = world.getLocation(animal);
+        world.delete(animal);
+        world.setTile(location, new Carcass(animalMeatAmount,world));
     }
 
 
@@ -69,7 +70,7 @@ public class Animals implements Actor {
 
     public void checkHunger() {
         if (hunger < 0) {
-            die();
+            die(this);
             System.out.println("I died of hunger");
         }
     }
@@ -77,7 +78,7 @@ public class Animals implements Actor {
     public void attack(Animals attacker, Animals target) {
         takeDamage(target, attacker.atk);
         if (isDead(target)){
-            target.die();
+            target.die(target);
         }
     }
     public void takeDamage(Animals target, int attack) {

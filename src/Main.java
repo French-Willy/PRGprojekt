@@ -57,6 +57,7 @@ public class Main {
         DisplayInformation diWolfCave = new DisplayInformation(Color.DARK_GRAY,"wolf-cave",false);
         DisplayInformation diCarcass = new DisplayInformation(Color.white, "carcass", true);
         DisplayInformation diBush = new DisplayInformation(Color.ORANGE, "bush", false);
+        DisplayInformation diFungi = new DisplayInformation(Color.RED, "Fungi2",false);
 
         p.setDisplayInformation(Person.class, di);
         p.setDisplayInformation(Grass.class, diGrass);
@@ -67,6 +68,7 @@ public class Main {
         p.setDisplayInformation(WolfCave.class,diWolfCave);
         p.setDisplayInformation(Carcass.class,diCarcass);
         p.setDisplayInformation(Bush.class,diBush);
+        p.setDisplayInformation(Fungi.class,diFungi);
 
         p.show(); // viser selve simulationen
         for (int i = 0; i < 101; i++) {
