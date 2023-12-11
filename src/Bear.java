@@ -10,8 +10,8 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Bear extends Animals {
     Set<Location> territory;
 
-    public Bear(int age, int hunger, int hp, World world, Location location) {
-        super(age, hunger, hp, world);
+    public Bear(int age, int hunger, int hp, int animalMeatAmount, World world, Location location) {
+        super(age, hunger, hp, animalMeatAmount, world);
         this.atk = 10;
         this.hp = hp;
         this.territory = world.getSurroundingTiles(location, 2);
@@ -26,6 +26,7 @@ public class Bear extends Animals {
         }
 
         if (world.getEntities().get(this) != null && world.isNight()) {
+
 
         } else if (world.isDay() && world.getEntities().get(this) == null) {
 

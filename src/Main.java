@@ -52,6 +52,7 @@ public class Main {
         DisplayInformation diRabbit = new DisplayInformation(Color.white,"rabbit-large",false);
         DisplayInformation diBurrow = new DisplayInformation(Color.black,"hole",false);
         DisplayInformation diBear = new DisplayInformation(Color.GRAY, "bear",false);
+        DisplayInformation diCarcass = new DisplayInformation(Color.white, "carcass", true);
         DisplayInformation diBush = new DisplayInformation(Color.ORANGE, "bush", false);
 
         p.setDisplayInformation(Person.class, di);
@@ -59,6 +60,7 @@ public class Main {
         p.setDisplayInformation(Rabbit.class, diRabbit);
         p.setDisplayInformation(Burrow.class, diBurrow);
         p.setDisplayInformation(Bear.class, diBear);
+        p.setDisplayInformation(Carcass.class, diCarcass);
         p.setDisplayInformation(Bush.class, diBush);
 
         p.show(); // viser selve simulationen
@@ -82,7 +84,7 @@ public class Main {
             }
             switch (stringSpwanObject) {
                 case "rabbit":
-                    world.setTile(spawn, new Rabbit(0, 5,5, world));
+                    world.setTile(spawn, new Rabbit(0, 5,5, 20,world));
                     break;
                 case "grass":
                     world.setTile(spawn, new Grass(0, world));
@@ -92,19 +94,19 @@ public class Main {
                     world.setTile(spawn, new Burrow( world,burrowSpace));
                     break;
                 case "wolf":
-                    world.setTile(spawn, new Wolf(0, 5, 20, world));
+                    world.setTile(spawn, new Wolf(0, 5, 20, 40,world));
                     break;
-                case "bear": {
+                case "bear":
                     if (speceficSpawn == null){
-                        world.setTile(spawn, new Bear(0, 10, 50, world, spawn));
+                        world.setTile(spawn, new Bear(0, 10, 50, 100, world,spawn));
                         System.out.println("random Spawn is : " + spawn);
                     }
                     else{
-                        world.setTile(speceficSpawn, new Bear(0, 10, 50, world, spawn));
+                        world.setTile(speceficSpawn, new Bear(0, 10, 50, 100, world, spawn));
                         System.out.println("specefic Spawn is : " + speceficSpawn);
                     }
                     break;
-                }
+
                 case "bush":{
                     world.setTile(spawn, new Bush(0, world));
                 }

@@ -12,8 +12,8 @@ public class Rabbit extends Animals {
     HashMap<Object, Location> favoriteBurrowMap;
     Location lastPosition;
 
-    public Rabbit(int age, int hunger, int hp, World world) {
-        super(age, hunger, hp, world);
+    public Rabbit(int age, int hunger, int hp, int animalMeatAmount, World world) {
+        super(age, hunger, hp, animalMeatAmount,world);
         this.oneChildOnly = true;
         this.homeBurrow = null;
 
@@ -128,7 +128,7 @@ public class Rabbit extends Animals {
                     System.out.println("hjælp");
                     if (world.getTile(tile).getClass() == Rabbit.class && world.getTile(tile) != this) {
                         System.out.println("jeg har født");
-                        Rabbit rabbitChild = new Rabbit(0, 5, 5,world);
+                        Rabbit rabbitChild = new Rabbit(0, 5, 5,20,world);
                         Set<Location> neighbours = world.getEmptySurroundingTiles(this.location);
                         List<Location> list = new ArrayList<>(neighbours);
                         if (list.size() <= 0) {

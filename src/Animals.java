@@ -16,11 +16,13 @@ public class Animals implements Actor {
     protected Location location;
     protected int hp;
     protected int atk;
+    protected int animalMeatAmount;
 
-    public Animals(int age, int hunger, int hp, World world) {
+    public Animals(int age, int hunger, int hp, int animalMeatAmount, World world) {
         this.age = age;
         this.hunger = hunger;
         this.hp = hp;
+        this.animalMeatAmount = animalMeatAmount;
         this.world = world;
     }
 
@@ -50,6 +52,7 @@ public class Animals implements Actor {
     }
 
     public void die() {
+        world.setTile(this.location, new Carcass(animalMeatAmount,world));
         world.delete(this);
     }
 
