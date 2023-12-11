@@ -8,7 +8,6 @@ public class WolfCave extends Inanimate implements NonBlocking {
     Location location;
     HashSet<Wolf> caveSpace;
 
-
     public WolfCave(World world, HashSet<Wolf> caveSpace) {
         super(world);
         this.caveSpace = caveSpace;
@@ -20,16 +19,16 @@ public class WolfCave extends Inanimate implements NonBlocking {
         System.out.println("cave lavet.... pog ");
     }
 
-    public void enterCave(Wolf wolf, WolfCave wolfcave) {
-        if (wolfcave.caveSpace.isEmpty() || wolfcave.caveSpace.size() < 10) {
-            wolfcave.caveSpace.add(wolf);
-        } else if (wolfcave.caveSpace.size() == 10) {
+    public void enterCave(Wolf wolf) {
+        if (caveSpace.isEmpty() || caveSpace.size() < 10) {
+            caveSpace.add(wolf);
+        } else if (caveSpace.size() == 10) {
 
         }
     }
 
-    public HashSet<Wolf> getCaveSpace(WolfCave wolfcave) {
-        return wolfcave.caveSpace;
+    public HashSet<Wolf> getCaveSpace(Object wolfcave) {
+        return caveSpace;
     }
 
     public boolean getCheckFullCave(WolfCave wolfcave) {

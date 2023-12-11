@@ -9,9 +9,6 @@ public class Burrow extends Inanimate implements NonBlocking {
     HashSet<Rabbit> burrowSpace;
 
 
-    int maxSpace;
-    int burrowBed;
-
 
     public Burrow(World world, HashSet<Rabbit> burrowSpace) {
         super(world);
@@ -24,7 +21,7 @@ public class Burrow extends Inanimate implements NonBlocking {
         System.out.println("burrow lavet.... pog ");
     }
 
-    public void enterBurrow(Rabbit rabbit, Object burrow) {
+    public void enterBurrow(Rabbit rabbit) {
         if (burrowSpace.isEmpty() || burrowSpace.size() < 5) {
             burrowSpace.add(rabbit);
         } else if (burrowSpace.size() == 4) {

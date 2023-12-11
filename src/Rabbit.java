@@ -170,10 +170,6 @@ public class Rabbit extends Animals {
                     } else if(((Burrow) object).getBurrowSpace(object).contains(this) == false && ((Burrow) object).getBurrowSpace(object).size() < 5){
                         
                     }
-
-
-
-
                 }
             }
             if (counter == 0) {
@@ -189,7 +185,7 @@ public class Rabbit extends Animals {
                                 if (calculateDistance(world.getEntities().get(this), closestBurrow) == 0) {
                                     lastPosition = world.getEntities().get(this);
                                     world.remove(this);
-                                    ((Burrow) object).enterBurrow(this, object);
+                                    ((Burrow) object).enterBurrow(this);
                                     break;
                                 }
                                 else {
@@ -207,7 +203,7 @@ public class Rabbit extends Animals {
                     for (Object object : world.getEntities().keySet()) {
                         if (object.getClass() == Burrow.class) {
                             if (world.getLocation(object) == this.location) {
-                                ((Burrow) object).enterBurrow(this, object);
+                                ((Burrow) object).enterBurrow(this);
                             }
                         }
                     }
