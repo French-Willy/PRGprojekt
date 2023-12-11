@@ -104,7 +104,7 @@ public class Main {
                     world.setTile(spawn, new Wolf(0, 5, 20,50, world));
                     System.out.println("1");
                     break;
-                case "bear": {
+                case "bear":
                     if (speceficSpawn == null){
                         world.setTile(spawn, new Bear(0, 10, 50,100, world,spawn));
                         System.out.println("random Spawn is : " + spawn);
@@ -114,7 +114,12 @@ public class Main {
                         System.out.println("specefic Spawn is : " + speceficSpawn);
                     }
                     break;
-                }
+                case "fungi":
+                    world.setTile(spawn, new Fungi(0, 20, world));
+                    break;
+                case "carcass":
+                    world.setTile(spawn, new Carcass(50, world));
+                    break;
                 default:
                     throw new Exception("no spawn type");
             }
