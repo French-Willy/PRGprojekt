@@ -12,12 +12,17 @@ public class Wolf extends Animals{
     public Wolf(int age, int hunger, int hp, World world) {
         super(age, hunger, hp, world);
         this.atk = 5;
+        this.hp = hp;
     }
 
 
     @Override
     public void act(World world) {
         super.act(world);
+        if(hp < 20){
+            regenerate();
+        }
+
         if (world.getEntities().get(this) != null && world.isNight()) {
 
 
@@ -31,15 +36,31 @@ public class Wolf extends Animals{
 
     private void move() {
         this.location = world.getLocation(this);
-        Set<Location> neighbours = world.getEmptySurroundingTiles(this.location);
-        List<Location> list = new ArrayList<>(neighbours);
-        int randomNum = ThreadLocalRandom.current().nextInt(0, list.size());
-        Location l = list.get(randomNum);
-        world.move(this, l);
-        this.location = world.getLocation(this);
-        if (hunger < 4)
-            seekFood(Rabbit.class);
-
+        if (world.getEmptySurroundingTiles(this.location).isEmpty()) {
+        }
+        else {
+            if (age > 4 || hunger < 3) {
+                if (timeCount % 2 == 0) {
+                    this.location = world.getLocation(this);
+                    Set<Location> neighbours = world.getEmptySurroundingTiles(this.location);
+                    List<Location> list = new ArrayList<>(neighbours);
+                    int randomNum = ThreadLocalRandom.current().nextInt(0, list.size());
+                    Location l = list.get(randomNum);
+                    world.move(this, l);
+                    this.location = world.getLocation(this);
+                    seekFood(Rabbit.class);
+                }
+            }
+            else {
+                this.location = world.getLocation(this);
+                Set<Location> neighbours = world.getEmptySurroundingTiles(this.location);
+                List<Location> list = new ArrayList<>(neighbours);
+                int randomNum = ThreadLocalRandom.current().nextInt(0, list.size());Location l = list.get(randomNum);
+                world.move(this, l);
+                this.location = world.getLocation(this);
+                seekFood(Rabbit.class);
+            }
+        }
     }
 
     public void seekFood(Class animal) {
@@ -62,4 +83,15 @@ public class Wolf extends Animals{
             System.out.println(e.getMessage());
         }
     }
+
+
+
+
+
+
+
+
+
+
+
 }

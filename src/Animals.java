@@ -28,25 +28,25 @@ public class Animals implements Actor {
         timeCount++;
         if (timeCount % 20 == 0) {
             age++;
-            System.out.println("Jeg har fødselsdag, før var jeg: " + (age - 1) + " nu er jeg: " + age);
         }
         if (age == 10) {
             die();
         }
     }
 
-    /*public void seekFood(Object object) {
-        for (Location tile : world.getSurroundingTiles()) {
-                if (world.getTile(tile).getClass() == object.getClass()) {
-                    world.move(this, tile);
-                    eating(object);
-                }
+    public boolean isDead(){
+        if (this.hp <= 0){
+            return true;
+        } else{
+            return false;
         }
-    }*/
+    }
 
 
-    public void sleep() {
-        world.remove(this);
+    public void regenerate() {
+        if (hunger > 5) {
+            hp++;
+        }
     }
 
     public void die() {
@@ -69,7 +69,7 @@ public class Animals implements Actor {
     }
 
     public void checkHunger() {
-        if (hunger == 0) {
+        if (hunger < 0) {
             die();
             System.out.println("I died of hunger");
         }
@@ -78,6 +78,7 @@ public class Animals implements Actor {
     public void takeDamage(int attack) {
         hp = hp - attack;
     }
+
 
     public Object findObject(Object object, Class type) {
         for (Object objects : world.getEntities().keySet()) {
@@ -116,15 +117,6 @@ public class Animals implements Actor {
     public int getHealth() {
         return hp;
     }
-
-    public boolean dead(Object object) {
-        if (world.getEntities().get(object) == null) {
-            return true;
-
-        } else
-            return false;
-    }
-
 
     public void makePath(Object object, Location initial, Location target) {
         double shortestDistance = calculateDistance(world.getCurrentLocation(), target);

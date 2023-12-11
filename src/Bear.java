@@ -12,12 +12,17 @@ public class Bear extends Animals {
     public Bear(int age, int hunger, int hp, World world) {
         super(age, hunger, hp, world);
         this.atk = 10;
+        this.hp = hp;
     }
 
 
     @Override
     public void act(World world) {
         super.act(world);
+        if(hp < 50){
+            regenerate();
+        }
+
         if (world.getEntities().get(this) != null && world.isNight()) {
 
 
@@ -49,7 +54,7 @@ public class Bear extends Animals {
             if (surroundingAnimals.contains(Wolf.class)) {
                 for (Location tile : world.getSurroundingTiles()) {
                     if (world.getTile(tile) != null && world.getTile(tile).getClass() == Wolf.class) {
-                        eat(tile);
+                        attack(tile);
                         break;
                     }
                 }
@@ -57,7 +62,7 @@ public class Bear extends Animals {
             } else if (surroundingAnimals.contains(Rabbit.class)) {
                 for (Location tile : world.getSurroundingTiles()) {
                     if(world.getTile(tile) != null && world.getTile(tile).getClass() == Rabbit.class){
-                        eat(tile);
+                        attack(tile);
                         break;
                     }
                 }
@@ -67,7 +72,7 @@ public class Bear extends Animals {
         } else if(hunger < 5){
             for (Location tile : world.getSurroundingTiles()){
                 if(world.getTile(tile) != null && world.getTile(tile).getClass() == Rabbit.class){
-                    eat(tile);
+                    attack(tile);
                     break;
                 }
             }
@@ -84,15 +89,24 @@ public class Bear extends Animals {
                 seekFood(surroundingAnimals);
             }
 
-            public void eat (Location tile){
+            public void attack (Location tile){
                 try {
                     if(world.getTile(tile).getClass() == Rabbit.class) {
-                        world.delete((world.getTile(tile)));
-                        hunger = hunger + 3;
-                        System.out.println("my hunger is now: " + hunger);
+                        Rabbit rabbit = (Rabbit) world.getTile(tile);
+                        rabbit.takeDamage(this.atk);
+                        if(rabbit.hp <= 0){
+                            eat(3);
+                            world.delete(rabbit);
+                        }
+
+
                     }else if (world.getTile(tile).getClass() == Wolf.class){
-                        world.delete((world.getTile(tile)));
-                        hunger = hunger + 5;
+                        Wolf wolf = (Wolf) world.getTile(tile);
+                        wolf.takeDamage(this.atk);
+                       if(wolf.hp <= 0){
+                           eat(5);
+                           world.delete(wolf);
+                       }
                     }
 
                 } catch (Exception e) {
@@ -100,6 +114,10 @@ public class Bear extends Animals {
                 }
             }
 
+
+            public void eat(int foodSize){
+                this.hunger = hunger + foodSize;
+            }
 
             private void wakeUp () {
 

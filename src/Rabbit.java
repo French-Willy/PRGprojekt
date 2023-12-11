@@ -145,6 +145,8 @@ public class Rabbit extends Animals {
             }
         }
     }
+
+
     public void seekShelter(){
         int counter = 0;
         double distancetoClosestBurrow = 100.0;
@@ -165,7 +167,13 @@ public class Rabbit extends Animals {
                                 makePath(this, world.getEntities().get(this), world.getEntities().get(object));
                             }
                         }
+                    } else if(((Burrow) object).getBurrowSpace(object).contains(this) == false && ((Burrow) object).getBurrowSpace(object).size() < 5){
+                        
                     }
+
+
+
+
                 }
             }
             if (counter == 0) {
@@ -210,9 +218,3 @@ public class Rabbit extends Animals {
         }
     }
 }
-
-
-                //VIL GERNE GØRE SÅLEDES, AT VI IKKE BEHØVER AT SKRIVE "ELSE" MEN, HVIS JEG IKKE GØR DET HER, SÅ LAVER DEN ET ELLER ANDET
-                //MÆRKELIGT SORT MAGI, HVOR DEN BEVÆGER SIG, SELVOM DEN IKKE ER SAT IND I VERDEN - "SPØGELSE"
-                //OG DET DER KAN SKE ER, AT 2 FORSKELLIGE "SPØGELSER" KAN SÆTTE SIG PÅ SAMME TILE, OG NÅR DE SÅ ET TICK SENERE SPAWNER IND
-                // SÅ KOMMER DER SELVFØLGELIG EN FEJL FORDI 2 BLOCKING ELEMENTS SPAWNER PÅ HINANDEN
