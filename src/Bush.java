@@ -3,13 +3,10 @@ import itumulator.world.World;
 public class Bush extends Plants {
     public boolean hasBerries;
 
-
     public Bush(int age, World world) {
         super(age, world);
         this.hasBerries = false;
-
     }
-
 
     @Override
     public void act(World world) {
@@ -26,7 +23,4 @@ public class Bush extends Plants {
     public boolean getHasBerries() {
         return hasBerries;
     }
-
-
-
 }

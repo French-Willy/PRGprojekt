@@ -10,7 +10,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Bear extends Animals {
     Set<Location> territory;
 
-    public Bear(int age, int hunger, int hp, int animalMeatAmount, World world,Location location) {
+    public Bear(int age, int hunger, int hp, int animalMeatAmount, World world, Location location) {
         super(age, hunger, hp, animalMeatAmount, world);
         this.atk = 10;
         this.hp = hp;
@@ -42,15 +42,15 @@ public class Bear extends Animals {
         this.location = world.getLocation(this);
         Set<Location> neighbours = world.getEmptySurroundingTiles(this.location);
         List<Location> list = new ArrayList<>(neighbours);
-        int randomNum = ThreadLocalRandom.current().nextInt(0, list.size());
 
-        while (!mayIMove) {
+        while (mayIMove == false) {
+            int randomNum = ThreadLocalRandom.current().nextInt(0, list.size());
             Location l = list.get(randomNum);
-            for (Location allowedLocation : territory) {
-                if (l == allowedLocation) {
-                    mayIMove = true;
-                    territoryLocation = l;
-                }
+            if (territory.contains(l)) {
+                mayIMove = true;
+                territoryLocation = l;
+            } else {
+                mayIMove = false;
             }
         }
         world.move(this, territoryLocation);
@@ -83,8 +83,9 @@ public class Bear extends Animals {
                 for (Location tile : world.getSurroundingTiles()) {
                     if (world.getTile(tile) != null && world.getTile(tile).getClass() == Bush.class) {
                         Bush bush = (Bush) world.getTile(tile);
-                        if(bush.hasBerries) {
-                        eatBerries(bush);
+
+                        if (bush.hasBerries) {
+                            eatBerries(bush);
                         }
                         break;
                     }
@@ -136,7 +137,7 @@ public class Bear extends Animals {
         }
     }
 
-    public void eatBerries(Bush bush){
+    public void eatBerries(Bush bush) {
         bush.hasBerries = false;
         eat(1);
     }

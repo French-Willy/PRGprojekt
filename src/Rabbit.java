@@ -170,6 +170,10 @@ public class Rabbit extends Animals {
                     } else if(((Burrow) object).getBurrowSpace(object).contains(this) == false && ((Burrow) object).getBurrowSpace(object).size() < 5){
                         
                     }
+
+
+
+
                 }
             }
             if (counter == 0) {

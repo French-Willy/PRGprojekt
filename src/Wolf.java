@@ -214,7 +214,7 @@ public class Wolf extends Animals{
                     }
                 }
             }
-            catch (IllegalArgumentException i) {
+            catch (Exception i) {
             }
         }
     }
