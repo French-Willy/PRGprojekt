@@ -57,7 +57,7 @@ public class Main {
         DisplayInformation diWolfCave = new DisplayInformation(Color.DARK_GRAY,"wolf-cave",false);
         DisplayInformation diCarcass = new DisplayInformation(Color.white, "carcass", true);
         DisplayInformation diBush = new DisplayInformation(Color.ORANGE, "bush", false);
-        DisplayInformation diFungi = new DisplayInformation(Color.RED, "Fungi2",false);
+        DisplayInformation diFungi = new DisplayInformation(Color.RED, "fungi2",true);
 
         p.setDisplayInformation(Person.class, di);
         p.setDisplayInformation(Grass.class, diGrass);
