@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.spi.LocaleServiceProvider;
 
 public class Wolf extends Animals{
     Location lastPosition;
@@ -65,15 +66,62 @@ public class Wolf extends Animals{
     }
 
     public void seekFood(Class animal) {
+        int counter = 0;
+        double closestPreyDistance = 100.0;
+        Object closestPrey = null;
         for (Location tile : world.getSurroundingTiles()) {
-            if (world.getTile(tile) != null && world.getTile(tile).getClass() == animal) {
+            if (world.getTile(tile) != null && world.getTile(tile).getClass() == Rabbit.class) {
                 eat(tile);
+                counter++;
                 break;
             }
         }
-        for (Object food : world.getEntities().keySet()) {
-            if (food.getClass() == )
+        if (hunger < 3 && counter == 0 && isPack() == true) {
+            for (Object object : world.getEntities().keySet()) {
+                if (object.getClass() == Bear.class) {
+                    if (calculateDistance(world.getEntities().get(this), world.getEntities().get(object)) < closestPreyDistance) {
+                        closestPreyDistance = calculateDistance(world.getEntities().get(this), world.getEntities().get(object));
+                        closestPrey = object;
+                    }
+                }
+            }
+            for (Object tile : world.getSurroundingTiles()) {
+                if (tile.getClass() == Bear.class) {
+                    attackBear((Bear) tile);
+                    break;
+                }
+            }
+             if (world.getEntities().get(closestPrey) != null && isPack() == true) {
+                makePath(this, world.getEntities().get(this), world.getEntities().get(closestPrey));
+            }
+        }
+        else if (hunger < 5 && counter == 0) {
+            for (Object object : world.getEntities().keySet()) {
+                if (object.getClass() == Rabbit.class) {
+                    if (calculateDistance(world.getEntities().get(this), world.getEntities().get(object)) < closestPreyDistance) {
+                        closestPreyDistance = calculateDistance(world.getEntities().get(this), world.getEntities().get(object));
+                        closestPrey = object;
+                    }
+                }
+            }
+            if (world.getEntities().get(closestPrey) != null) {
+                makePath(this, world.getEntities().get(this), world.getEntities().get(closestPrey));
+            }
+        }
+    }
 
+    public boolean isPack() {
+        int WolfCounter = 0;
+        for (Object tile : world.getSurroundingTiles()) {
+            if (tile.getClass() == Wolf.class) {
+                WolfCounter ++;
+            }
+        }
+        if (WolfCounter >= 3) {
+            return true;
+        }
+        else {
+            return false;
         }
     }
 
@@ -99,6 +147,11 @@ public class Wolf extends Animals{
                 WolfCave.createNewCave(world, world.getEntities().get(this));
             }
         }
+    }
+    public void attackBear(Bear bear){
+        System.out.println(bear.hp + " før ");
+        bear.takeDamage(this.atk);
+        System.out.println(bear.hp + " efter ");
     }
 
     public void seekCave(){

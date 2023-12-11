@@ -10,13 +10,12 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Bear extends Animals {
     Set<Location> territory;
 
-    public Bear(int age, int hunger, int hp, int animalMeatAmount, World world, Location location) {
+    public Bear(int age, int hunger, int hp, int animalMeatAmount, World world,Location location) {
         super(age, hunger, hp, animalMeatAmount, world);
         this.atk = 10;
         this.hp = hp;
         this.territory = world.getSurroundingTiles(location, 2);
     }
-
 
     @Override
     public void act(World world) {
