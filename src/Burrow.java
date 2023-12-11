@@ -53,3 +53,4 @@ public class Burrow extends Inanimate implements NonBlocking {
     }
 }
 
+//test
