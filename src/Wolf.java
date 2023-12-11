@@ -9,8 +9,8 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Wolf extends Animals{
 
-    public Wolf(int age, int hunger, int hp, World world) {
-        super(age, hunger, hp, world);
+    public Wolf(int age, int hunger, int hp, int animalMeatAmount, World world) {
+        super(age, hunger, hp, animalMeatAmount, world);
         this.atk = 5;
         this.hp = hp;
     }

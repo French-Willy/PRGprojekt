@@ -52,13 +52,14 @@ public class Main {
         DisplayInformation diRabbit = new DisplayInformation(Color.white,"rabbit-large",false);
         DisplayInformation diBurrow = new DisplayInformation(Color.black,"hole",false);
         DisplayInformation diBear = new DisplayInformation(Color.GRAY, "bear",false);
-
+        DisplayInformation diCarcass = new DisplayInformation(Color.white, "carcass", true);
 
         p.setDisplayInformation(Person.class, di);
         p.setDisplayInformation(Grass.class, diGrass);
         p.setDisplayInformation(Rabbit.class, diRabbit);
         p.setDisplayInformation(Burrow.class, diBurrow);
         p.setDisplayInformation(Bear.class, diBear);
+        p.setDisplayInformation(Carcass.class, diCarcass);
 
         p.show(); // viser selve simulationen
         for (int i = 0; i < 101; i++) {
@@ -81,7 +82,7 @@ public class Main {
             }
             switch (stringSpwanObject) {
                 case "rabbit":
-                    world.setTile(spawn, new Rabbit(0, 5,5, world));
+                    world.setTile(spawn, new Rabbit(0, 5,5, 20,world));
                     break;
                 case "grass":
                     world.setTile(spawn, new Grass(0, world));
@@ -91,19 +92,18 @@ public class Main {
                     world.setTile(spawn, new Burrow( world,burrowSpace));
                     break;
                 case "wolf":
-                    world.setTile(spawn, new Wolf(0, 5, 20, world));
+                    world.setTile(spawn, new Wolf(0, 5, 20, 40,world));
                     break;
-                case "bear": {
+                case "bear":
                     if (speceficSpawn == null){
-                        world.setTile(spawn, new Bear(0, 10, 50, world));
+                        world.setTile(spawn, new Bear(0, 10, 50, 100, world));
                         System.out.println("random Spawn is : " + spawn);
                     }
                     else{
-                        world.setTile(speceficSpawn, new Bear(0, 10, 50, world));
+                        world.setTile(speceficSpawn, new Bear(0, 10, 50, 100, world));
                         System.out.println("specefic Spawn is : " + speceficSpawn);
                     }
                     break;
-                }
                 default:
                     throw new Exception("no spawn type");
             }
