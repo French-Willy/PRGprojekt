@@ -36,13 +36,9 @@ public class Animals implements Actor {
         }
     }
 
-    public boolean isDead(){
-        if (this.hp <= 0){
-            return true;
-        } else{
-            return false;
-        }
-    }
+
+
+
 
 
     public void regenerate() {
@@ -78,8 +74,21 @@ public class Animals implements Actor {
         }
     }
 
-    public void takeDamage(int attack) {
-        hp = hp - attack;
+    public void attack(Animals attacker, Animals target) {
+        takeDamage(target, attacker.atk);
+        if (isDead(target)){
+            target.die();
+        }
+    }
+    public void takeDamage(Animals target, int attack) {
+        target.hp = target.hp - attack;
+    }
+    public boolean isDead(Animals animal){
+        if (animal.hp <= 0){
+            return true;
+        } else{
+            return false;
+        }
     }
 
 

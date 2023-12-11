@@ -67,11 +67,12 @@ public class Wolf extends Animals{
 
     public void seekFood(Class animal) {
         int counter = 0;
-        double closestPreyDistance = 100.0;
+        double closestPreyDistance = 7;
+        double closestCarcasDistance = 7;
         Object closestPrey = null;
         for (Location tile : world.getSurroundingTiles()) {
             if (world.getTile(tile) != null && world.getTile(tile).getClass() == Rabbit.class) {
-                eat(tile);
+                attack(this, (Animals) world.getTile(tile));
                 counter++;
                 break;
             }
@@ -87,7 +88,7 @@ public class Wolf extends Animals{
             }
             for (Object tile : world.getSurroundingTiles()) {
                 if (tile.getClass() == Bear.class) {
-                    attackBear((Bear) tile);
+                    attack(this, (Animals) tile);
                     break;
                 }
             }
@@ -148,11 +149,7 @@ public class Wolf extends Animals{
             }
         }
     }
-    public void attackBear(Bear bear){
-        System.out.println(bear.hp + " før ");
-        bear.takeDamage(this.atk);
-        System.out.println(bear.hp + " efter ");
-    }
+
 
     public void seekCave(){
         int counter = 0;
