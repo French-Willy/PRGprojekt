@@ -1,11 +1,16 @@
+import itumulator.simulator.Actor;
 import itumulator.world.Location;
 import itumulator.world.World;
 
-public class Inanimate {
-    Location location;
+public class Inanimate implements Actor {
+    protected Location location;
     protected World world;
     public Inanimate(World world){
-        this.location = location;
         this.world = world;
+    }
+
+    @Override
+    public void act(World world){
+        this.location = world.getLocation(this);
     }
 }
