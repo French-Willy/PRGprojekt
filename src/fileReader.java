@@ -7,7 +7,7 @@ public class fileReader {
     int worldsize_file;
     public ArrayList<ArrayList<String>> inputLines = new ArrayList<>();
     public void Reader() throws Exception {
-        File file = new File("data/InputFiles_UGE1/tf1-1.txt");
+        File file = new File("data/InputFiles_Uge2/t2-8a.txt");
         Scanner s = new Scanner(file);
 
         //The first line in every file is the world-size, so therefor it's easy to assign it as the first step.
