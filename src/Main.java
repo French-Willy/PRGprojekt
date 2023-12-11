@@ -52,13 +52,14 @@ public class Main {
         DisplayInformation diRabbit = new DisplayInformation(Color.white,"rabbit-large",false);
         DisplayInformation diBurrow = new DisplayInformation(Color.black,"hole",false);
         DisplayInformation diBear = new DisplayInformation(Color.GRAY, "bear",false);
-
+        DisplayInformation diBush = new DisplayInformation(Color.ORANGE, "bush", false);
 
         p.setDisplayInformation(Person.class, di);
         p.setDisplayInformation(Grass.class, diGrass);
         p.setDisplayInformation(Rabbit.class, diRabbit);
         p.setDisplayInformation(Burrow.class, diBurrow);
         p.setDisplayInformation(Bear.class, diBear);
+        p.setDisplayInformation(Bush.class, diBush);
 
         p.show(); // viser selve simulationen
         for (int i = 0; i < 101; i++) {
@@ -95,14 +96,17 @@ public class Main {
                     break;
                 case "bear": {
                     if (speceficSpawn == null){
-                        world.setTile(spawn, new Bear(0, 10, 50, world));
+                        world.setTile(spawn, new Bear(0, 10, 50, world, spawn));
                         System.out.println("random Spawn is : " + spawn);
                     }
                     else{
-                        world.setTile(speceficSpawn, new Bear(0, 10, 50, world));
+                        world.setTile(speceficSpawn, new Bear(0, 10, 50, world, spawn));
                         System.out.println("specefic Spawn is : " + speceficSpawn);
                     }
                     break;
+                }
+                case "bush":{
+                    world.setTile(spawn, new Bush(0, world));
                 }
                 default:
                     throw new Exception("no spawn type");

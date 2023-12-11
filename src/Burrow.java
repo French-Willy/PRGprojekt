@@ -7,10 +7,7 @@ import java.util.HashSet;
 public class Burrow extends Inanimate implements NonBlocking {
     Location location;
     HashSet<Rabbit> burrowSpace;
-
-
     int maxSpace;
-    int burrowBed;
 
 
     public Burrow(World world, HashSet<Rabbit> burrowSpace) {
@@ -51,6 +48,8 @@ public class Burrow extends Inanimate implements NonBlocking {
             return false;
         }
     }
+
+
 }
 
 //test
