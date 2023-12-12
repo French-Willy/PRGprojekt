@@ -2,4 +2,4 @@
 bear 1
 grass 10-15
 rabbit 5-7
-wolf 4
+wolf 8

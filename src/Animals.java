@@ -1,10 +1,7 @@
 import itumulator.simulator.Actor;
 import itumulator.world.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Animals implements Actor {
@@ -25,6 +22,9 @@ public class Animals implements Actor {
         this.animalMeatAmount = animalMeatAmount;
         this.world = world;
     }
+    public Location getLocation(Animals animal){
+        return world.getEntities().get(animal);
+    }
 
     public void ageing() {
         timeCount++;
@@ -37,10 +37,6 @@ public class Animals implements Actor {
     }
 
 
-
-
-
-
     public void regenerate() {
         if (hunger > 5) {
             hp++;
@@ -50,7 +46,7 @@ public class Animals implements Actor {
     public void die(Animals animal) {
         Location location = world.getLocation(animal);
         world.delete(animal);
-        world.setTile(location, new Carcass(animalMeatAmount,world));
+        world.setTile(location, new Carcass(animalMeatAmount, world));
     }
 
 
@@ -77,30 +73,73 @@ public class Animals implements Actor {
 
     public void attack(Animals attacker, Animals target) {
         takeDamage(target, attacker.atk);
-        if (isDead(target)){
+        if (isDead(target)) {
             target.die(target);
         }
     }
+
     public void takeDamage(Animals target, int attack) {
         target.hp = target.hp - attack;
     }
-    public boolean isDead(Animals animal){
-        if (animal.hp <= 0){
+
+    public boolean isDead(Animals animal) {
+        if (animal.hp <= 0) {
             return true;
-        } else{
+        } else {
             return false;
         }
     }
 
+    public int getHealth() {
+        return hp;
+    }
 
-    public Object findObject(Object object, Class type) {
-        for (Object objects : world.getEntities().keySet()) {
+    public Location getRandomSurroundingLocation(Location location) {
+        List<Location> SurroundingTiles = new ArrayList<>();
+        for (Location tile : world.getEmptySurroundingTiles(location)) {
+                System.out.println("kom så");
+                SurroundingTiles.add(tile);
+        }
+        System.out.println(SurroundingTiles.size()+ " størrelse");
+        if (SurroundingTiles.size()>0){
+            int randomInt = ThreadLocalRandom.current().nextInt(0, SurroundingTiles.size());
+            return  SurroundingTiles.get(randomInt);
+        }
+        else {
+            System.out.println("hob hov hov");
+            return null;
+        }
+    }
+    public Object findClosestObject(Animals animal, Class type) {
+        int counter = 0;
+        double closestDistance = 100;
+        Object closestObject = null;
+        for (Object object : world.getEntities().keySet()) {
             if (object.getClass() == type) {
-                return objects;
+                while (calculateDistance(world.getEntities().get(animal), world.getEntities().get(object)) < closestDistance) {
+                    closestDistance = calculateDistance(world.getEntities().get(animal), world.getEntities().get(object));
+                    closestObject = object;
+                }
             }
         }
-        return null;
+        return closestObject;
     }
+
+    public double findClosestObjectDistance(Animals animal, Class type) {
+        int counter = 0;
+        double closestDistance = 100;
+        Object closestObject = null;
+        for (Object object : world.getEntities().keySet()) {
+            if (object.getClass() == type) {
+                while (calculateDistance(world.getEntities().get(animal), world.getEntities().get(object)) < closestDistance) {
+                    closestDistance = calculateDistance(world.getEntities().get(animal), world.getEntities().get(object));
+                    closestObject = object;
+                }
+            }
+        }
+        return closestDistance;
+    }
+
 
     public double calculateDistance(Location initial, Location target) {
         double x;
@@ -127,10 +166,6 @@ public class Animals implements Actor {
         return distance;
     }
 
-    public int getHealth() {
-        return hp;
-    }
-
     public void makePath(Object object, Location initial, Location target) {
         double shortestDistance = calculateDistance(world.getCurrentLocation(), target);
         Location closestTile = null;
@@ -145,6 +180,23 @@ public class Animals implements Actor {
             }
             if (closestTile != null) {
                 world.move(object, closestTile);
+            }
+        }
+    }
+    public void makePathAway(Object object, Location initial, Location target) {
+        double furthestDistance = calculateDistance(world.getCurrentLocation(), target);
+        Location furthestTile = null;
+
+        if (initial == target) {
+        } else {
+            for (Location emptyTile : world.getEmptySurroundingTiles(initial)) {
+                while (calculateDistance(emptyTile, target) > furthestDistance) {
+                    furthestDistance = calculateDistance(emptyTile, target);
+                    furthestTile = emptyTile;
+                }
+            }
+            if (furthestTile != null) {
+                world.move(object, furthestTile);
             }
         }
     }

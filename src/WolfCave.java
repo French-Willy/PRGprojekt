@@ -31,9 +31,9 @@ public class WolfCave extends Inanimate implements NonBlocking {
         return caveSpace;
     }
 
-    public boolean getCheckFullCave(WolfCave wolfcave) {
+    public boolean getWolfCaveHasSpace(Object wolfcave) {
         boolean hasSpace = false;
-        if (wolfcave.caveSpace.size() < 10) {
+        if (caveSpace.size() < 10) {
             return true;
         }
         else {

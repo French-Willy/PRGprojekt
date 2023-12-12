@@ -2,6 +2,7 @@ import itumulator.executable.Program;
 import itumulator.world.World;
 import itumulator.world.Location;
 import itumulator.executable.DisplayInformation;
+
 import java.awt.*;
 import java.util.List;
 import java.util.*;
@@ -31,33 +32,33 @@ public class Main {
         world.setTile(place, person);
 
         //Adds the inputlist from the filereader into main
-        for(ArrayList<String> spawnObject : file.inputLines){
+        for (ArrayList<String> spawnObject : file.inputLines) {
             int min = Integer.parseInt(spawnObject.get(1));
 
             int max = Integer.parseInt(spawnObject.get(2));
 
-            int spawnObjectAmount = ThreadLocalRandom.current().nextInt(min,max + 1);
+            int spawnObjectAmount = ThreadLocalRandom.current().nextInt(min, max + 1);
 
-            if (spawnObject.size() > 3){
+            if (spawnObject.size() > 3) {
                 System.out.println(spawnObject);
                 Location objectStartSpawn = new Location(Integer.parseInt(spawnObject.get(2)), Integer.parseInt(spawnObject.get(3)));
                 System.out.println(objectStartSpawn);
-                addObject(spawnObject.get(0),world,spawnObjectAmount, objectStartSpawn);
-            }else{
-                addObject(spawnObject.get(0),world,spawnObjectAmount, null);
+                addObject(spawnObject.get(0), world, spawnObjectAmount, objectStartSpawn);
+            } else {
+                addObject(spawnObject.get(0), world, spawnObjectAmount, null);
             }
         }
 
-        DisplayInformation di = new DisplayInformation(Color.RED,"steve",true);
-        DisplayInformation diGrass = new DisplayInformation(Color.GREEN, "grass1",true);
-        DisplayInformation diRabbit = new DisplayInformation(Color.white,"rabbit-large",false);
-        DisplayInformation diBurrow = new DisplayInformation(Color.black,"hole",false);
-        DisplayInformation diBear = new DisplayInformation(Color.GRAY, "bear",false);
-        DisplayInformation diWolf = new DisplayInformation(Color.CYAN, "wolf",false);
-        DisplayInformation diWolfCave = new DisplayInformation(Color.DARK_GRAY,"wolf-cave",false);
+        DisplayInformation di = new DisplayInformation(Color.RED, "steve", true);
+        DisplayInformation diGrass = new DisplayInformation(Color.GREEN, "grass1", true);
+        DisplayInformation diRabbit = new DisplayInformation(Color.white, "rabbit-large", false);
+        DisplayInformation diBurrow = new DisplayInformation(Color.black, "hole", false);
+        DisplayInformation diBear = new DisplayInformation(Color.GRAY, "bear", false);
+        DisplayInformation diWolf = new DisplayInformation(Color.CYAN, "wolf", false);
+        DisplayInformation diWolfCave = new DisplayInformation(Color.DARK_GRAY, "wolf-cave", false);
         DisplayInformation diCarcass = new DisplayInformation(Color.white, "carcass", true);
         DisplayInformation diBush = new DisplayInformation(Color.ORANGE, "bush", false);
-        DisplayInformation diFungi = new DisplayInformation(Color.RED, "fungi2",true);
+        DisplayInformation diFungi = new DisplayInformation(Color.RED, "fungi2", true);
 
         p.setDisplayInformation(Person.class, di);
         p.setDisplayInformation(Grass.class, diGrass);
@@ -65,18 +66,16 @@ public class Main {
         p.setDisplayInformation(Burrow.class, diBurrow);
         p.setDisplayInformation(Bear.class, diBear);
         p.setDisplayInformation(Wolf.class, diWolf);
-        p.setDisplayInformation(WolfCave.class,diWolfCave);
-        p.setDisplayInformation(Carcass.class,diCarcass);
-        p.setDisplayInformation(Bush.class,diBush);
-        p.setDisplayInformation(Fungi.class,diFungi);
+        p.setDisplayInformation(WolfCave.class, diWolfCave);
+        p.setDisplayInformation(Carcass.class, diCarcass);
+        p.setDisplayInformation(Bush.class, diBush);
+        p.setDisplayInformation(Fungi.class, diFungi);
 
         p.show(); // viser selve simulationen
         for (int i = 0; i < 101; i++) {
             p.simulate();
 
-
         }
-
     }
 
     //Method for spawning object on random tiles. Cheecks it spawns on empty tiles
@@ -93,26 +92,24 @@ public class Main {
             }
             switch (stringSpwanObject) {
                 case "rabbit":
-                    world.setTile(spawn, new Rabbit(0, 5,5,20, world));
+                    world.setTile(spawn, new Rabbit(0, 5, 5, 20, world));
                     break;
                 case "grass":
                     world.setTile(spawn, new Grass(0, world));
                     break;
                 case "burrow":
                     HashSet<Rabbit> burrowSpace = new HashSet<>();
-                    world.setTile(spawn, new Burrow( world,burrowSpace));
+                    world.setTile(spawn, new Burrow(world, burrowSpace));
                     break;
                 case "wolf":
-                    world.setTile(spawn, new Wolf(0, 5, 20,50, world));
-                    System.out.println("1");
+                    world.setTile(spawn, new Wolf(0, 5, 20, 50, world));
                     break;
                 case "bear":
-                    if (speceficSpawn == null){
-                        world.setTile(spawn, new Bear(0, 10, 50,100, world,spawn));
+                    if (speceficSpawn == null) {
+                        world.setTile(spawn, new Bear(0, 10, 50, 100, world, spawn));
                         System.out.println("random Spawn is : " + spawn);
-                    }
-                    else{
-                        world.setTile(speceficSpawn, new Bear(0, 10, 50,100, world,spawn));
+                    } else {
+                        world.setTile(speceficSpawn, new Bear(0, 10, 50, 100, world, spawn));
                         System.out.println("specefic Spawn is : " + speceficSpawn);
                     }
                     break;

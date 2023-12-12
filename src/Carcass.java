@@ -31,6 +31,9 @@ public class Carcass extends Inanimate {
     public void createFungi(){
         this.location = world.getLocation(this);
         System.out.println(this.location);
+        if (world.containsNonBlocking(getLocation(this))){
+            world.delete(world.getNonBlocking(getLocation(this)));
+        }
         world.setTile(this.location, new Fungi(0,shroomSize,world));
         world.delete(this);
     }

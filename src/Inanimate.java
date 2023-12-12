@@ -13,4 +13,7 @@ public class Inanimate implements Actor {
     public void act(World world){
         this.location = world.getLocation(this);
     }
+    public Location getLocation(Inanimate inanimate){
+        return world.getEntities().get(inanimate);
+    }
 }
