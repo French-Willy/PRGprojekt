@@ -8,28 +8,50 @@ import java.util.List;
 public class Fungi extends Plants implements NonBlocking{
 
     int fungiSize;
+    int fRadius;
     public Fungi(int age, int fungiSize, World world){
         super(age, world);
         this.fungiSize = fungiSize;
+        fRadius = 0;
     }
 
     @Override
     public void act(World world){
-        findCarcass();
+        isFungiDead();
     }
 
-    public void findCarcass(){
-        this.location = world.getLocation(this);
-        List<Location> SurroundingCarcass = new ArrayList<>();
-        for (Location tile : world.getSurroundingTiles()) {
-            //System.out.println(world.getSurroundingTiles());
-            if (world.getTile(tile) != null && world.getTile(tile).getClass() == Carcass.class && !SurroundingCarcass.equals(tile)){
-                System.out.println("cool");
-                SurroundingCarcass.add(tile);
-                System.out.println(SurroundingCarcass);
-            }
+    private void isFungiDead(){
+        if (!findCarcass()){
+            fungiSize--;
+        }else {
+            fungiSize++;
+        }
+        if (fungiSize <= 0) {
+            killFungi();
         }
     }
 
+    public void killFungi(){
+        world.delete(this);
+    }
 
+    private int FungiRadius(){
+        if (fungiSize <= 30 && fungiSize > 10){
+            fRadius = fungiSize / 10;
+        }else if (fungiSize <= 10){
+            fRadius = 1;
+        }
+        return fRadius;
+    }
+
+    public boolean findCarcass(){
+        this.location = world.getLocation(this);
+        List<Location> SurroundingCarcass = new ArrayList<>();
+        for (Location tile : world.getSurroundingTiles(FungiRadius())) {
+            if (world.getTile(tile) != null && world.getTile(tile).getClass() == Carcass.class){
+                SurroundingCarcass.add(tile);
+            }
+        }
+        return !SurroundingCarcass.isEmpty();
+    }
 }
