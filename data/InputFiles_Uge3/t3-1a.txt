@@ -1,2 +1,3 @@
 5
 carcass 2-5
+fungi 10

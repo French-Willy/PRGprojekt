@@ -117,7 +117,7 @@ public class Main {
                     world.setTile(spawn, new Fungi(0, 20, world));
                     break;
                 case "carcass":
-                    world.setTile(spawn, new Carcass(50, world));
+                    world.setTile(spawn, new Carcass(10, world));
                     break;
                 default:
                     throw new Exception("no spawn type");
