@@ -13,6 +13,8 @@ public class Wolf extends Animals {
     Location lastPosition;
     Location homeCave;
 
+    boolean oneChildOnly;
+
 
     public Wolf(int age, int hunger, int hp, int animalMeatAmount, World world) {
         super(age, hunger, hp, animalMeatAmount, world);
@@ -24,19 +26,24 @@ public class Wolf extends Animals {
     @Override
     public void act(World world) {
         super.act(world);
+        //System.out.println(this + " " + this.hunger);
         if (hp < 20) {
             regenerate();
         }
 
-        if (world.getEntities().get(this) != null && world.isNight()) {
+        if (world.getEntities().get(this) != null && world.isNight() && hunger > 2) {
             seekCave();
         }
         if (world.isDay() && getLocation(this) == null) {
-            System.out.println("vågn op " + homeCave);
+            System.out.println("vågn op wolf " + homeCave);
             if (homeCave != null) {
                 wakeUp(homeCave);
             }
-        } else if (world.isDay() && getLocation(this) != null) {
+        }
+        else if (world.isDay() && getLocation(this) != null ) {
+            move();
+        }
+        else if (hunger >= 2 && getLocation(this) != null){
             move();
         }
         if (world.isNight() && getLocation(this) == null && homeCave != null) {
@@ -73,6 +80,7 @@ public class Wolf extends Animals {
         }
     }public void eat(Animals animal, Carcass carcass) {
         carcass.meatEaten(10);
+        hunger = 7;
     }
 
 
@@ -84,23 +92,37 @@ public class Wolf extends Animals {
         for (Location tile : world.getSurroundingTiles()) {
             if (world.getTile(tile) != null && world.getTile(tile).getClass() == Carcass.class){
                 eat(this, (Carcass) world.getTile(tile));
+                System.out.println("spiser kadaver");
+                counter ++;
+                break;
             }
-            if (world.getTile(tile) != null && world.getTile(tile).getClass() == Rabbit.class) {
+            else if (world.getTile(tile) != null && world.getTile(tile).getClass() == Rabbit.class) {
                 attack(this, (Animals) world.getTile(tile));
-                counter++;
+                counter ++;
                 break;
             }
         }
+        if (hunger < 10 && counter == 0){
+            if (findClosestObject(this, Carcass.class) != null) {
+                System.out.println("finder carcas");
+                makePath(this, getLocation(this),world.getEntities().get(findClosestObject(this,Carcass.class)));
+            }
+        }
+        //System.out.println(counter + " counter " + isPack());
+
         if (hunger < 3 && counter == 0 && isPack() == true) {
+            System.out.println("jagter bjørn");
             closestPrey = findClosestObject(this, Bear.class);
             closestPreyDistance = findClosestObjectDistance(this, Bear.class);
-            for (Object tile : world.getSurroundingTiles()) {
-                if (tile.getClass() == Bear.class) {
-                    attack(this, (Animals) tile);
+            for (Location tile : world.getSurroundingTiles()) {
+                if (world.getTile(tile) != null && world.getTile(tile).getClass() == Bear.class) {
+                    attack(this, (Animals) world.getTile(tile));
+                    System.out.println(" angiber bjørn");
                     break;
                 }
             }
             if (world.getEntities().get(closestPrey) != null && isPack() == true) {
+                System.out.println(" på vej mod bjørn");
                 makePath(this, world.getEntities().get(this), world.getEntities().get(closestPrey));
             }
         } else if (hunger < 5 && counter == 0) {
@@ -114,12 +136,13 @@ public class Wolf extends Animals {
 
     public boolean isPack() {
         int WolfCounter = 0;
-        for (Object tile : world.getSurroundingTiles()) {
-            if (tile.getClass() == Wolf.class) {
+        for (Location tile : world.getSurroundingTiles()) {
+            if (world.getTile(tile) != null && world.getTile(tile).getClass() == Wolf.class) {
                 WolfCounter++;
+                //System.out.println(WolfCounter + " ulve omrking");
             }
         }
-        if (WolfCounter >= 3) {
+        if (WolfCounter >= 2) {
             return true;
         } else {
             return false;
@@ -150,20 +173,20 @@ public class Wolf extends Animals {
 
     public void reproduce() {
         Wolf wolf = new Wolf(0, 5, 20, 50, world);
-        int counter = 0;
-        if (this.age == 2) {
-            world.add(wolf);
-            counter++;
-        }
         try {
-            if (counter != 0 && world.getNonBlocking(homeCave).getClass() == WolfCave.class) {
+            if (world.getNonBlocking(homeCave).getClass() == WolfCave.class && oneChildOnly == false) {
                 if (((WolfCave) world.getNonBlocking(homeCave)).getWolfCaveHasSpace(world.getNonBlocking(homeCave).getClass()) == true) {
+                    world.add(wolf);
+                    wolf.homeCave = homeCave;
                     ((WolfCave) world.getNonBlocking(homeCave)).enterCave(wolf);
                     System.out.println("jeg har født i hulen");
-                } else {
+                    oneChildOnly = true;
+                }
+                else {
                     System.out.println("Find nyt hul");
                     if (getRandomSurroundingLocation(homeCave) != null) {
                         world.setTile(getRandomSurroundingLocation(homeCave), wolf);
+                        oneChildOnly = true;
                     }
                 }
             }
@@ -180,12 +203,13 @@ public class Wolf extends Animals {
             for (Object object : world.getEntities().keySet()) {
                 if (object.getClass() == WolfCave.class) {
                     if (((WolfCave) object).getCaveSpace(object).contains(this)) {
-                        System.out.println(((WolfCave) object).getCaveSpace(object) + " Hvad er der i caven");
+                        //System.out.println(((WolfCave) object).getCaveSpace(object) + " Hvad er der i caven");
                         counter++;
                         if (world.getEntities().get(this) != null) {
                             if (calculateDistance(world.getEntities().get(this), world.getEntities().get(object)) <= 1) {
                                 lastPosition = world.getEntities().get(this);
-                                System.out.println(" wtf");
+                                homeCave = getLocation(this);
+                                //System.out.println(" wtf");
                                 world.remove(this);
                                 break;
                             } else {
@@ -210,7 +234,7 @@ public class Wolf extends Animals {
                             if (calculateDistance(world.getEntities().get(this), closestWolfCave) <=1) {
                                 lastPosition = world.getEntities().get(this);
                                 homeCave = getLocation(this);
-                                System.out.println(" this is fine");
+                                //System.out.println(" this is fine");
                                 ((WolfCave) object).enterCave(this);
                                 world.remove(this);
 
@@ -229,11 +253,11 @@ public class Wolf extends Animals {
         if (counter == 0) {
             if (getLocation(this) != null) {
                 if (getLocation(this) != null && findClosestObject(this, WolfCave.class) == null) {
-                    System.out.println(findClosestObject(this, WolfCave.class));
+                    //System.out.println(findClosestObject(this, WolfCave.class));
                     counter++;
                     try {
                         Dig(world.getEntities().get(this));
-                        System.out.println("999");
+                        //System.out.println("999");
                         for (Object object : world.getEntities().keySet()) {
                             if (object.getClass() == WolfCave.class) {
                                 if (world.getLocation(object) == this.location) {
@@ -246,10 +270,10 @@ public class Wolf extends Animals {
                     }
                 }
 
-                if (findClosestObjectDistance(this, WolfCave.class) > world.getSize() / 5) {
+                if (findClosestObjectDistance(this, WolfCave.class) > world.getSize() / 3) {
                     try {
                         Dig(world.getEntities().get(this));
-                        System.out.println("131");
+                        //System.out.println("131");
                         for (Object object : world.getEntities().keySet()) {
                             if (object.getClass() == WolfCave.class) {
                                 if (world.getLocation(object) == this.location) {

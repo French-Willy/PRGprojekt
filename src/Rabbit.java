@@ -22,14 +22,14 @@ public class Rabbit extends Animals {
     @Override
     public void act(World world) {
         if (this.getHealth() < 0) {
-            die(this);
+            //die(this);
         }
         int counter = 0;
         super.act(world);
 
         seekShelter();
             if (world.getEntities().get(this) == null && world.isDay()) {
-                System.out.println("vågn op " + lastPosition);
+                //System.out.println("vågn op " + lastPosition);
                 if (lastPosition != null ){
                     wakeUp(lastPosition);
                 }

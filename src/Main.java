@@ -72,7 +72,7 @@ public class Main {
         p.setDisplayInformation(Fungi.class, diFungi);
 
         p.show(); // viser selve simulationen
-        for (int i = 0; i < 101; i++) {
+        for (int i = 0; i < 201; i++) {
             p.simulate();
 
         }

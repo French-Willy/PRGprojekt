@@ -14,6 +14,7 @@ public class Animals implements Actor {
     protected int hp;
     protected int atk;
     protected int animalMeatAmount;
+    protected int maxHP;
 
     public Animals(int age, int hunger, int hp, int animalMeatAmount, World world) {
         this.age = age;
@@ -21,6 +22,7 @@ public class Animals implements Actor {
         this.hp = hp;
         this.animalMeatAmount = animalMeatAmount;
         this.world = world;
+        this.maxHP = hp;
     }
 
     public Location getLocation(Animals animal) {
@@ -28,7 +30,6 @@ public class Animals implements Actor {
     }
 
     public void ageing() {
-        timeCount++;
         if (timeCount % 20 == 0) {
             age++;
         }
@@ -58,17 +59,27 @@ public class Animals implements Actor {
     //Gør det som alle dyr har tilfælles.
     @Override
     public void act(World world) {
+        timeCount ++;
         if (world.isDay()) {
-            hunger--;
+            hunger();
             //checkHunger();
         }
         ageing();
     }
 
+    public void hunger(){
+        if (timeCount % 4 == 0 && hunger > 0){
+            hunger --;
+        }
+        checkHunger();
+    }
+
     public void checkHunger() {
-        if (hunger < 0) {
-            die(this);
-            System.out.println("I died of hunger");
+        if (hunger <= 0) {
+            this.hp --;
+        }
+        if (hunger > 8 && hp < maxHP){
+            this.hp ++;
         }
     }
 
