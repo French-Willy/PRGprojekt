@@ -22,7 +22,8 @@ public class Animals implements Actor {
         this.animalMeatAmount = animalMeatAmount;
         this.world = world;
     }
-    public Location getLocation(Animals animal){
+
+    public Location getLocation(Animals animal) {
         return world.getEntities().get(animal);
     }
 
@@ -97,28 +98,27 @@ public class Animals implements Actor {
     public Location getRandomSurroundingLocation(Location location) {
         List<Location> SurroundingTiles = new ArrayList<>();
         for (Location tile : world.getEmptySurroundingTiles(location)) {
-                System.out.println("kom så");
-                SurroundingTiles.add(tile);
+            SurroundingTiles.add(tile);
         }
-        System.out.println(SurroundingTiles.size()+ " størrelse");
-        if (SurroundingTiles.size()>0){
+        if (SurroundingTiles.size() > 0) {
             int randomInt = ThreadLocalRandom.current().nextInt(0, SurroundingTiles.size());
-            return  SurroundingTiles.get(randomInt);
-        }
-        else {
-            System.out.println("hob hov hov");
+            return SurroundingTiles.get(randomInt);
+        } else {
             return null;
         }
     }
+
     public Object findClosestObject(Animals animal, Class type) {
         int counter = 0;
         double closestDistance = 100;
         Object closestObject = null;
         for (Object object : world.getEntities().keySet()) {
             if (object.getClass() == type) {
-                while (calculateDistance(world.getEntities().get(animal), world.getEntities().get(object)) < closestDistance) {
-                    closestDistance = calculateDistance(world.getEntities().get(animal), world.getEntities().get(object));
-                    closestObject = object;
+                if (world.getEntities().get(object) != null) {
+                    while (calculateDistance(world.getEntities().get(animal), world.getEntities().get(object)) < closestDistance) {
+                        closestDistance = calculateDistance(world.getEntities().get(animal), world.getEntities().get(object));
+                        closestObject = object;
+                    }
                 }
             }
         }
@@ -131,9 +131,11 @@ public class Animals implements Actor {
         Object closestObject = null;
         for (Object object : world.getEntities().keySet()) {
             if (object.getClass() == type) {
-                while (calculateDistance(world.getEntities().get(animal), world.getEntities().get(object)) < closestDistance) {
-                    closestDistance = calculateDistance(world.getEntities().get(animal), world.getEntities().get(object));
-                    closestObject = object;
+                if (world.getEntities().get(object) != null) {
+                    while (calculateDistance(world.getEntities().get(animal), world.getEntities().get(object)) < closestDistance) {
+                        closestDistance = calculateDistance(world.getEntities().get(animal), world.getEntities().get(object));
+                        closestObject = object;
+                    }
                 }
             }
         }
@@ -183,6 +185,7 @@ public class Animals implements Actor {
             }
         }
     }
+
     public void makePathAway(Object object, Location initial, Location target) {
         double furthestDistance = calculateDistance(world.getCurrentLocation(), target);
         Location furthestTile = null;
