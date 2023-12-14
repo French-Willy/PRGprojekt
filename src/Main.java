@@ -102,7 +102,7 @@ public class Main {
                     world.setTile(spawn, new Burrow(world, burrowSpace));
                     break;
                 case "wolf":
-                    world.setTile(spawn, new Wolf(0, 5, 20, 50, world));
+                    world.setTile(spawn, new Wolf(0, 8, 20, 50, world));
                     break;
                 case "bear":
                     if (speceficSpawn == null) {
