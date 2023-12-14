@@ -29,6 +29,7 @@ public class Animals implements Actor {
         return world.getEntities().get(animal);
     }
 
+
     public void ageing() {
         if (timeCount % 20 == 0) {
             age++;

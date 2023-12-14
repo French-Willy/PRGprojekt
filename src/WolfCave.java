@@ -40,4 +40,12 @@ public class WolfCave extends Inanimate implements NonBlocking {
             return false;
         }
     }
+    public boolean isInWolfCave(Object animal){
+        if (caveSpace.contains(animal)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 }
