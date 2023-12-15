@@ -1,19 +1,23 @@
+import itumulator.executable.DisplayInformation;
+import itumulator.executable.DynamicDisplayInformationProvider;
 import itumulator.simulator.Actor;
 import itumulator.world.*;
 
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class Animals implements Actor {
+public class Animals implements Actor, DynamicDisplayInformationProvider {
     protected int age;
     protected int timeCount;
     protected int hunger;
-    protected String type;
     protected World world;
     protected Location location;
     protected int hp;
     protected int atk;
     protected int animalMeatAmount;
+    boolean sleeping;
     protected int maxHP;
 
     public Animals(int age, int hunger, int hp, int animalMeatAmount, World world) {
@@ -28,7 +32,6 @@ public class Animals implements Actor {
     public Location getLocation(Animals animal) {
         return world.getEntities().get(animal);
     }
-
 
     public void ageing() {
         if (timeCount % 20 == 0) {
@@ -214,5 +217,10 @@ public class Animals implements Actor {
                 world.move(object, furthestTile);
             }
         }
+    }
+
+    @Override
+    public DisplayInformation getInformation() {
+      return null;
     }
 }

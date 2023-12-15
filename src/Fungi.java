@@ -1,7 +1,9 @@
+import itumulator.executable.DisplayInformation;
 import itumulator.world.Location;
 import itumulator.world.NonBlocking;
 import itumulator.world.World;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +15,11 @@ public class Fungi extends Plants implements NonBlocking{
         super(age, world);
         this.fungiSize = fungiSize;
         fRadius = 0;
+    }
+
+    @Override
+    public DisplayInformation getInformation() {
+        return new DisplayInformation(Color.RED, "fungi2", false);
     }
 
     @Override

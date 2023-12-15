@@ -1,6 +1,8 @@
+import itumulator.executable.DisplayInformation;
 import itumulator.world.Location;
 import itumulator.world.World;
 
+import java.awt.*;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -25,6 +27,23 @@ public class Wolf extends Animals {
         this.hp = hp;
     }
 
+    @Override
+    public DisplayInformation getInformation() {
+        if (sleeping) {
+            if (this.age > 2) {
+                return new DisplayInformation(Color.GRAY, "wolf-sleeping", false);
+            } else {
+                return new DisplayInformation(Color.GRAY, "wollfl-small-sleeping", false);
+            }
+        } else {
+            if (this.age > 2) {
+                return new DisplayInformation(Color.GRAY, "wolf", false);
+            } else {
+                return new DisplayInformation(Color.GRAY, "wolf-small", false);
+            }
+
+        }
+    }
 
     @Override
     public void act(World world) {

@@ -1,3 +1,4 @@
+import itumulator.executable.DynamicDisplayInformationProvider;
 import itumulator.executable.Program;
 import itumulator.world.World;
 import itumulator.world.Location;
@@ -7,7 +8,6 @@ import java.awt.*;
 import java.util.List;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
-
 
 public class Main {
     public static void main(String[] args) throws Exception {
@@ -74,7 +74,6 @@ public class Main {
         p.show(); // viser selve simulationen
         for (int i = 0; i < 201; i++) {
             p.simulate();
-
         }
     }
 
