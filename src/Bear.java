@@ -1,7 +1,6 @@
 import itumulator.executable.DisplayInformation;
 import itumulator.world.Location;
 import itumulator.world.World;
-
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -39,7 +38,7 @@ public class Bear extends Animals {
     @Override
     public void act(World world) {
         super.act(world);
-        if (hp < 50) {
+        if (hp < 50 && hunger > 6) {
             regenerate();
         }
 
@@ -55,7 +54,7 @@ public class Bear extends Animals {
             sleeping = false;
             if (Danger()) {
                 protectTerritory();
-            } else if (hunger <= 6) {
+            } else if (hunger <= 10) {
                 seekFood();
                 System.out.println("HUNGRYYY: " + hunger);
             } else {
@@ -65,8 +64,10 @@ public class Bear extends Animals {
     }
 
     private void ofAge() {
+
         if (this.age > 4) {
             this.atk = atk + 5;
+            this.
         }
     }
 
@@ -122,7 +123,26 @@ public class Bear extends Animals {
 
     public void seekFood() {
         HashSet<Class> surroundingFood = findFood();
-        if (hunger < 4) {
+        if (hunger < 11) {
+            if(surroundingFood.contains(Carcass.class)){
+                double DistanceToClosestCarcass = findClosestObjectDistance(this, Carcass.class);
+                Object closestCarcass = findClosestObject(this, Carcass.class);
+                for(Location tile : territory){
+                    if(world.getTile(tile) == closestCarcass){
+                        if(DistanceToClosestCarcass <= 1.5){
+                            eat((Carcass) closestCarcass, 20);
+                            System.out.println("NOM NOM NOM, my hunger is now: " + hunger);
+                            break;
+                        }else {
+                           makePath(this, world.getEntities().get(this), world.getLocation(closestCarcass));
+                           if(DistanceToClosestCarcass <= 1.5){
+                               eat((Carcass) closestCarcass, 20);
+                               System.out.println("NOM NOM NOM, my hunger is now: " + hunger);
+                           }
+                        }
+                    }
+                }
+            }
             if (surroundingFood.contains(Rabbit.class)) {
                 double DistanceToClosestRabbit = findClosestObjectDistance(this, Rabbit.class);
                 Object closestRabbit = findClosestObject(this, Rabbit.class);

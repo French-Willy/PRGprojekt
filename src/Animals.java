@@ -33,6 +33,11 @@ public class Animals implements Actor, DynamicDisplayInformationProvider {
         return world.getEntities().get(animal);
     }
 
+    public void eat(Carcass carcass, int biteSize) {
+        carcass.meatEaten(biteSize);
+        hunger = hunger + 5;
+    }
+
     public void ageing() {
         if (timeCount % 20 == 0) {
             age++;
@@ -55,11 +60,6 @@ public class Animals implements Actor, DynamicDisplayInformationProvider {
         world.setTile(location, new Carcass(animalMeatAmount, world));
     }
 
-
-    public void reproduce() {
-
-    }
-
     //Gør det som alle dyr har tilfælles.
     @Override
     public void act(World world) {
@@ -78,6 +78,8 @@ public class Animals implements Actor, DynamicDisplayInformationProvider {
         checkHunger();
     }
 
+
+
     public void checkHunger() {
         if (hunger <= 0) {
             this.hp --;
@@ -88,14 +90,10 @@ public class Animals implements Actor, DynamicDisplayInformationProvider {
     }
 
     public void attack(Animals attacker, Animals target) {
-        takeDamage(target, attacker.atk);
+        target.hp = target.hp - attacker.atk;
         if (isDead(target)) {
             target.die(target);
         }
-    }
-
-    public void takeDamage(Animals target, int attack) {
-        target.hp = target.hp - attack;
     }
 
     public boolean isDead(Animals animal) {
