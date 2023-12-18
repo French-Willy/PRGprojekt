@@ -125,9 +125,9 @@ public class Rabbit extends Animals {
         if (age == 1 && this.oneChildOnly) {
             for (Location tile : world.getSurroundingTiles()) {
                 if (world.getTile(tile) != null) {
-                    System.out.println("hjælp");
+                    //System.out.println("hjælp");
                     if (world.getTile(tile).getClass() == Rabbit.class && world.getTile(tile) != this) {
-                        System.out.println("jeg har født");
+                     //   System.out.println("jeg har født");
                         Rabbit rabbitChild = new Rabbit(0, 5, 5,20,world);
                         Set<Location> neighbours = world.getEmptySurroundingTiles(this.location);
                         List<Location> list = new ArrayList<>(neighbours);

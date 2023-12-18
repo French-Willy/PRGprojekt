@@ -180,8 +180,8 @@ public class Animals implements Actor {
         return distance;
     }
 
-    public void makePath(Object object, Location initial, Location target) {
-        double shortestDistance = calculateDistance(world.getCurrentLocation(), target);
+    public Location makePath(Object object, Location initial, Location target) {
+        double shortestDistance = calculateDistance(initial, target);
         Location closestTile = null;
 
         if (initial == target) {
@@ -194,8 +194,10 @@ public class Animals implements Actor {
             }
             if (closestTile != null) {
                 world.move(object, closestTile);
+                return closestTile;
             }
         }
+        return null;
     }
 
     public void makePathAway(Object object, Location initial, Location target) {

@@ -18,14 +18,11 @@ public class Wolf extends Animals {
     boolean huntingBear = false;
     int Actions;
 
-
     public Wolf(int age, int hunger, int hp, int animalMeatAmount, World world) {
         super(age, hunger, hp, animalMeatAmount, world);
         this.atk = 5;
         this.hp = hp;
     }
-
-
     @Override
     public void act(World world) {
         super.act(world);
@@ -60,7 +57,7 @@ public class Wolf extends Animals {
         }
     }
 
-    private void move() {
+    protected void move() {
         //System.out.println(getLocation(this) + " har det en location");
         this.location = world.getLocation(this);
         if (world.getEmptySurroundingTiles(this.location).isEmpty()) {
@@ -89,6 +86,11 @@ public class Wolf extends Animals {
         carcass.meatEaten(10);
         hunger = 7;
     }
+
+    public void territory(){
+      //  Set<Location> territory = world.getSurroundingTiles(getLocation(this),3);
+        //if (territory.contains(Wolf.class)){
+        }
 
 
     public void seekFood() {
@@ -143,6 +145,9 @@ public class Wolf extends Animals {
         }
     }
 
+    /**
+     *
+     */
     public void packHuntBear(){
         WolfCave wolfcave = (WolfCave) world.getNonBlocking(homeCave);
         wolfcave.getCaveSpace(wolfcave);

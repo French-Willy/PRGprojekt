@@ -14,7 +14,7 @@ public class Bush extends Plants {
         growBerries();
     }
 
-    private void growBerries() {
+    public void growBerries() {
         if (age % 5 == 0) {
             hasBerries = true;
         }
