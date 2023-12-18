@@ -47,28 +47,28 @@ public class Wolf extends Animals {
     @Override
     public void act(World world) {
         super.act(world);
-        //System.out.println(this + " " + this.hunger);
         Actions = 0;
         if (hp < 20) {
             regenerate();
         }
         if (huntingBear == true) {
             seekFood();
-            Actions++;
+            Actions ++;
         }
 
         if (Actions == 0 && world.getEntities().get(this) != null && world.isNight() && hunger > 2 && huntingBear == false) {
             seekCave();
 
-        } else if (Actions == 0 && getLocation(this) != null) {
+        }
+        else if (Actions == 0 && getLocation(this) != null){
             move();
         }
         if (Actions == 0 && world.isDay() && getLocation(this) == null) {
-            System.out.println("vågn op wolf " + homeCave);
             if (homeCave != null) {
                 wakeUp(homeCave);
             }
-        } else if (Actions == 0 && world.isDay() && getLocation(this) != null) {
+        }
+        else if (Actions == 0 && world.isDay() && getLocation(this) != null){
             move();
         }
         if (Actions == 0 && world.isNight() && getLocation(this) == null && homeCave != null) {
@@ -77,7 +77,6 @@ public class Wolf extends Animals {
     }
 
     protected void move() {
-        //System.out.println(getLocation(this) + " har det en location");
         this.location = world.getLocation(this);
         if (world.getEmptySurroundingTiles(this.location).isEmpty()) {
         } else {
@@ -103,10 +102,10 @@ public class Wolf extends Animals {
         }
     }
 
-    public void territory() {
-        //  Set<Location> territory = world.getSurroundingTiles(getLocation(this),3);
+    public void territory(){
+      //  Set<Location> territory = world.getSurroundingTiles(getLocation(this),3);
         //if (territory.contains(Wolf.class)){
-    }
+        }
 
 
     public void seekFood() {
@@ -114,27 +113,34 @@ public class Wolf extends Animals {
         double closestPreyDistance = 7;
         double closestCarcasDistance = 7;
         Object closestPrey = null;
+        for (Location tile : world.getSurroundingTiles()){
+            if (world.getTile(tile) != null && world.getTile(tile).getClass() == Wolf.class && homeCave != null){
+                WolfCave wolfcave = (WolfCave) world.getNonBlocking(homeCave);
+                if (wolfcave.getCaveSpace(wolfcave).contains(this) && wolfcave.getCaveSpace(wolfcave).contains(world.getTile(tile)) == false){
+                    attack(this, (Animals) world.getTile(tile));
+                    break;
+                }
+            }
+        }
         for (Location tile : world.getSurroundingTiles()) {
-            if (world.getTile(tile) != null && world.getTile(tile).getClass() == Carcass.class) {
+            if (world.getTile(tile) != null && world.getTile(tile).getClass() == Carcass.class){
                 eat((Carcass) world.getTile(tile), 10);
-                System.out.println("spiser kadaver");
-                counter++;
+                counter ++;
+                huntingBear = false;
                 break;
-            } else if (world.getTile(tile) != null && world.getTile(tile).getClass() == Rabbit.class) {
+            }
+            else if (world.getTile(tile) != null && world.getTile(tile).getClass() == Rabbit.class) {
                 attack(this, (Animals) world.getTile(tile));
-                counter++;
+                counter ++;
                 break;
             }
         }
-        if (hunger < 10 && counter == 0) {
+        if (hunger < 10 && counter == 0){
             if (findClosestObject(this, Carcass.class) != null) {
-                System.out.println("finder carcas");
-                makePath(this, getLocation(this), world.getEntities().get(findClosestObject(this, Carcass.class)));
+                makePath(this, getLocation(this),world.getEntities().get(findClosestObject(this,Carcass.class)));
             }
         }
-        //System.out.println(counter + " counter " + isPack());
         if (homeCave != null && hunger < 3 && counter == 0 && isPack() == true || huntingBear == true) {
-            System.out.println("jagter bjørn");
             if (huntingBear == false) {
                 packHuntBear();
             }
@@ -143,12 +149,10 @@ public class Wolf extends Animals {
             for (Location tile : world.getSurroundingTiles()) {
                 if (world.getTile(tile) != null && world.getTile(tile).getClass() == Bear.class) {
                     attack(this, (Animals) world.getTile(tile));
-                    System.out.println(" angiber bjørn");
                     break;
                 }
             }
             if (world.getEntities().get(closestPrey) != null && huntingBear == true) {
-                System.out.println(" på vej mod bjørn");
                 makePath(this, world.getEntities().get(this), world.getEntities().get(closestPrey));
             }
         } else if (hunger < 5 && counter == 0) {
@@ -163,11 +167,11 @@ public class Wolf extends Animals {
     /**
      *
      */
-    public void packHuntBear() {
+    public void packHuntBear(){
         WolfCave wolfcave = (WolfCave) world.getNonBlocking(homeCave);
         wolfcave.getCaveSpace(wolfcave);
-        for (Wolf wolf : wolfcave.getCaveSpace(wolfcave)) {
-            wolf.huntingBear = true;
+        for (Wolf wolf : wolfcave.getCaveSpace(wolfcave)){
+            wolf.huntingBear= true;
         }
     }
 
@@ -178,7 +182,6 @@ public class Wolf extends Animals {
             if (world.getNonBlocking(homeCave).getClass() == WolfCave.class) {
                 if (((WolfCave) world.getNonBlocking(homeCave)).getWolfCaveHasSpace(world.getNonBlocking(homeCave).getClass()) == true) {
                     WolfCounter++;
-                    System.out.println(WolfCounter + " ulve omrking");
                 }
             }
         }
@@ -188,6 +191,7 @@ public class Wolf extends Animals {
             return false;
         }
     }
+
 
 
     public void Dig(Location location) {
@@ -221,10 +225,8 @@ public class Wolf extends Animals {
                         world.add(wolf);
                         wolf.homeCave = homeCave;
                         ((WolfCave) world.getNonBlocking(homeCave)).enterCave(wolf);
-                        System.out.println("jeg har født i hulen");
                         oneChildOnly = true;
                     } else {
-                        System.out.println("Find nyt hul");
                         if (getRandomSurroundingLocation(homeCave) != null) {
                             world.setTile(getRandomSurroundingLocation(homeCave), wolf);
                             oneChildOnly = true;
@@ -232,7 +234,8 @@ public class Wolf extends Animals {
                     }
                 }
             }
-        } catch (IllegalArgumentException e) {
+        }
+        catch(IllegalArgumentException e) {
         }
     }
 
@@ -244,12 +247,10 @@ public class Wolf extends Animals {
             for (Object object : world.getEntities().keySet()) {
                 if (object.getClass() == WolfCave.class) {
                     if (((WolfCave) object).getCaveSpace(object).contains(this)) {
-                        //System.out.println(((WolfCave) object).getCaveSpace(object) + " Hvad er der i caven");
                         counter++;
                         if (world.getEntities().get(this) != null) {
                             if (calculateDistance(world.getEntities().get(this), world.getEntities().get(object)) <= 1) {
                                 lastPosition = world.getEntities().get(this);
-                                //System.out.println(" wtf");
                                 world.remove(this);
                                 break;
                             } else {
@@ -271,11 +272,9 @@ public class Wolf extends Animals {
                                 distancetoClosestWolfCave = calculateDistance(world.getLocation(this), world.getLocation(object));
                                 closestWolfCave = world.getEntities().get(object);
                             }
-                            if (calculateDistance(world.getEntities().get(this), closestWolfCave) <= 1) {
+                            if (calculateDistance(world.getEntities().get(this), closestWolfCave) <=1) {
                                 lastPosition = world.getEntities().get(this);
-                                System.out.println(closestWolfCave + " closestwoflcave 2");
                                 homeCave = closestWolfCave;
-                                //System.out.println(" this is fine");
                                 ((WolfCave) object).enterCave(this);
                                 world.remove(this);
 
@@ -294,11 +293,9 @@ public class Wolf extends Animals {
         if (counter == 0) {
             if (getLocation(this) != null) {
                 if (getLocation(this) != null && findClosestObject(this, WolfCave.class) == null) {
-                    //System.out.println(findClosestObject(this, WolfCave.class));
                     counter++;
                     try {
                         Dig(world.getEntities().get(this));
-                        //System.out.println("999");
                         for (Object object : world.getEntities().keySet()) {
                             if (object.getClass() == WolfCave.class) {
                                 if (world.getLocation(object) == this.location) {
@@ -314,7 +311,6 @@ public class Wolf extends Animals {
                 if (findClosestObjectDistance(this, WolfCave.class) > world.getSize() / 3) {
                     try {
                         Dig(world.getEntities().get(this));
-                        //System.out.println("131");
                         for (Object object : world.getEntities().keySet()) {
                             if (object.getClass() == WolfCave.class) {
                                 if (world.getLocation(object) == this.location) {

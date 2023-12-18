@@ -67,7 +67,7 @@ public class Bear extends Animals {
 
         if (this.age > 4) {
             this.atk = atk + 5;
-            this.
+            this.animalMeatAmount = animalMeatAmount*2;
         }
     }
 

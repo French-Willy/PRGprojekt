@@ -28,6 +28,18 @@ public class Animals implements Actor, DynamicDisplayInformationProvider {
         this.world = world;
         this.maxHP = hp;
     }
+    @Override
+    public void act(World world) {
+        timeCount ++;
+        if (world.isDay()) {
+            hunger();
+            //checkHunger();
+        }
+        ageing();
+        if (isDead(this)) {
+            die(this);
+        }
+    }
 
     public Location getLocation(Animals animal) {
         return world.getEntities().get(animal);
@@ -61,15 +73,6 @@ public class Animals implements Actor, DynamicDisplayInformationProvider {
     }
 
     //Gør det som alle dyr har tilfælles.
-    @Override
-    public void act(World world) {
-        timeCount ++;
-        if (world.isDay()) {
-            hunger();
-            //checkHunger();
-        }
-        ageing();
-    }
 
     public void hunger(){
         if (timeCount % 4 == 0 && hunger > 0){

@@ -17,7 +17,6 @@ public class Rabbit extends Animals {
         super(age, hunger, hp, animalMeatAmount, world);
         this.oneChildOnly = true;
         this.homeBurrow = null;
-
     }
 
     @Override
@@ -45,7 +44,6 @@ public class Rabbit extends Animals {
         int counter = 0;
         super.act(world);
 
-
         if (world.getEntities().get(this) != null && world.isNight()) {
             seekShelter();
         }
@@ -66,6 +64,33 @@ public class Rabbit extends Animals {
     }
 
     public void move() {
+        //System.out.println("hvad sker der???");
+        int counter = 0;
+        Set<Location> territory = world.getSurroundingTiles(getLocation(this), 2);
+        System.out.println(territory);
+        for (Location l : territory) {
+            if (world.isTileEmpty(l) == false) {
+                if (world.getTile(l).getClass() == Wolf.class) {
+                    System.out.println("flygt!!!");
+                    makePathAway(this, getLocation(this), getLocation((Animals) findClosestObject(this, Wolf.class)));
+                    counter++;
+                    break;
+                }
+            }
+        }
+        if (age > 2 || hunger < 3 && counter == 0) {
+            if (timeCount % 2 == 0) {
+                world.move(this, getRandomSurroundingLocation(getLocation(this)));
+                seekFood(Grass.class);
+            }
+        } else {
+            System.out.println("im just chilling");
+            world.move(this, getRandomSurroundingLocation(getLocation(this)));
+            seekFood(Grass.class);
+        }
+    }
+
+    public void move2() {
         this.location = world.getLocation(this);
         if (world.getEmptySurroundingTiles(this.location).isEmpty()) {
         } else {
