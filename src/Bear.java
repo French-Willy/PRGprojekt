@@ -50,7 +50,9 @@ public class Bear extends Animals {
             System.out.println("Bear has awoken at this location: " + this.location);
 
         } else if (world.isDay()) {
-            ofAge();
+            if (!ofAge) {
+                ofAge();
+            }
             sleeping = false;
             if (Danger()) {
                 protectTerritory();
@@ -67,7 +69,8 @@ public class Bear extends Animals {
 
         if (this.age > 4) {
             this.atk = atk + 5;
-            this.animalMeatAmount = animalMeatAmount*2;
+            this.animalMeatAmount = animalMeatAmount * 2;
+            ofAge = true;
         }
     }
 
@@ -109,12 +112,10 @@ public class Bear extends Animals {
                 Wolf wolf = (Wolf) closestWolf;
                 if (DistanceToClosestWolf <= 1.5) {
                     attack(this, (Wolf) closestWolf);
-                    System.out.println("I ATTACKED, IT'S HEALTH IS NOW: " + wolf.hp);
                 } else {
                     makePath(this, world.getEntities().get(this), world.getLocation(closestWolf));
                     if (DistanceToClosestWolf <= 1.5) {
                         attack(this, (Wolf) closestWolf);
-                        System.out.println("I ATTACKED, IT'S HEALTH IS NOW: " + wolf.hp);
                     }
                 }
             }
@@ -124,21 +125,21 @@ public class Bear extends Animals {
     public void seekFood() {
         HashSet<Class> surroundingFood = findFood();
         if (hunger < 11) {
-            if(surroundingFood.contains(Carcass.class)){
+            if (surroundingFood.contains(Carcass.class)) {
                 double DistanceToClosestCarcass = findClosestObjectDistance(this, Carcass.class);
                 Object closestCarcass = findClosestObject(this, Carcass.class);
-                for(Location tile : territory){
-                    if(world.getTile(tile) == closestCarcass){
-                        if(DistanceToClosestCarcass <= 1.5){
+                for (Location tile : territory) {
+                    if (world.getTile(tile) == closestCarcass) {
+                        if (DistanceToClosestCarcass <= 1.5) {
                             eat((Carcass) closestCarcass, 20);
                             System.out.println("NOM NOM NOM, my hunger is now: " + hunger);
                             break;
-                        }else {
-                           makePath(this, world.getEntities().get(this), world.getLocation(closestCarcass));
-                           if(DistanceToClosestCarcass <= 1.5){
-                               eat((Carcass) closestCarcass, 20);
-                               System.out.println("NOM NOM NOM, my hunger is now: " + hunger);
-                           }
+                        } else {
+                            makePath(this, world.getEntities().get(this), world.getLocation(closestCarcass));
+                            if (DistanceToClosestCarcass <= 1.5) {
+                                eat((Carcass) closestCarcass, 20);
+                                System.out.println("NOM NOM NOM, my hunger is now: " + hunger);
+                            }
                         }
                     }
                 }
@@ -199,70 +200,11 @@ public class Bear extends Animals {
 
                     }
                 }
-            } else{ move(); }
+            } else {
+                move();
+            }
         }
     }
-
-            /* if (surroundingFood.contains(Wolf.class)) {
-                for (Location tile : territory) {
-                    if (world.getTile(tile) != null && world.getTile(tile).getClass() == Wolf.class) {
-                        makePath(this, world.getEntities().get(this), tile);
-                        if (calculateDistance(world.getEntities().get(this), tile) == 1) {
-                            attack(this, (Animals) world.getTile(tile));
-                            break;
-                        }
-                    }
-                }
-
-            } else if (surroundingFood.contains(Rabbit.class)) {
-                for (Location tile : territory) {
-                    makePath(this, world.getEntities().get(this), tile);
-                    if (calculateDistance(world.getEntities().get(this), tile) == 1) {
-                        attack(this, (Animals) world.getTile(tile));
-                        break;
-                    }
-                }
-
-            } else if (surroundingFood.contains(Bush.class)) {
-                for (Location tile : territory) {
-                    if (world.getTile(tile) != null && world.getTile(tile).getClass() == Bush.class) {
-                        Bush bush = (Bush) world.getTile(tile);
-                        if (bush.hasBerries) {
-                            makePath(this, world.getEntities().get(this), tile);
-                            if (calculateDistance(world.getEntities().get(this), world.getEntities().get(this)) == 1) {
-                                eatBerries(bush);
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-
-        } else if (hunger < 7) {
-            if (surroundingFood.contains(Rabbit.class)) {
-                for (Location tile : territory) {
-                    makePath(this, world.getEntities().get(this), tile);
-                    if (calculateDistance(world.getEntities().get(this), tile) == 1) {
-                        attack(this, (Animals) world.getTile(tile));
-                        break;
-                    }
-                }
-
-            } else if (surroundingFood.contains(Bush.class)) {
-                for (Location tile : territory) {
-                    if (world.getTile(tile) != null && world.getTile(tile).getClass() == Bush.class) {
-                        Bush bush = (Bush) world.getTile(tile);
-                        if (bush.hasBerries) {
-                            makePath(this, world.getEntities().get(this), tile);
-                            if (calculateDistance(world.getEntities().get(this), world.getEntities().get(this)) == 1) {
-                                eatBerries(bush);
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-        }*/
 
     private HashSet<Class> findFood() {
         HashSet<Class> surroundingFood = new HashSet<>();

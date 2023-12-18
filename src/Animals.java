@@ -19,6 +19,7 @@ public class Animals implements Actor, DynamicDisplayInformationProvider {
     protected int animalMeatAmount;
     boolean sleeping;
     protected int maxHP;
+    protected boolean ofAge;
 
     public Animals(int age, int hunger, int hp, int animalMeatAmount, World world) {
         this.age = age;
@@ -30,7 +31,7 @@ public class Animals implements Actor, DynamicDisplayInformationProvider {
     }
     @Override
     public void act(World world) {
-        timeCount ++;
+        timeCount++;
         if (world.isDay()) {
             hunger();
             //checkHunger();
@@ -74,21 +75,20 @@ public class Animals implements Actor, DynamicDisplayInformationProvider {
 
     //Gør det som alle dyr har tilfælles.
 
-    public void hunger(){
-        if (timeCount % 4 == 0 && hunger > 0){
-            hunger --;
+    public void hunger() {
+        if (timeCount % 4 == 0 && hunger > 0) {
+            hunger--;
         }
         checkHunger();
     }
 
 
-
     public void checkHunger() {
         if (hunger <= 0) {
-            this.hp --;
+            this.hp--;
         }
-        if (hunger > 8 && hp < maxHP){
-            this.hp ++;
+        if (hunger > 8 && hp < maxHP) {
+            this.hp++;
         }
     }
 
@@ -224,6 +224,6 @@ public class Animals implements Actor, DynamicDisplayInformationProvider {
 
     @Override
     public DisplayInformation getInformation() {
-      return null;
+        return null;
     }
 }
