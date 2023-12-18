@@ -1,6 +1,8 @@
+import itumulator.executable.DisplayInformation;
 import itumulator.world.Location;
 import itumulator.world.World;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -25,7 +27,7 @@ public class Bear extends Animals {
         }
 
         if (world.getEntities().get(this) != null && world.isNight()) {
-
+            sleeping = true;
 
         } else if (world.isDay() && world.getEntities().get(this) == null) {
 
@@ -33,6 +35,13 @@ public class Bear extends Animals {
 
         } else if (world.isDay()) {
             move();
+            ofAge();
+        }
+    }
+
+    private void ofAge(){
+        if(this.age > 4){
+            this.atk = atk + 5;
         }
     }
 
@@ -111,37 +120,30 @@ public class Bear extends Animals {
         seekFood(surroundingFood);
     }
 
-    /*
-    public void attack(Location tile) {
-        try {
-            if (world.getTile(tile).getClass() == Rabbit.class) {
-                Rabbit rabbit = (Rabbit) world.getTile(tile);
-                rabbit.takeDamage(this.atk);
-                if (rabbit.hp <= 0) {
-                    eat(3);
-                    world.delete(rabbit);
-                }
-            } else if (world.getTile(tile).getClass() == Wolf.class) {
-                Wolf wolf = (Wolf) world.getTile(tile);
-                wolf.takeDamage(this.atk);
-                if (wolf.hp <= 0) {
-                    eat(5);
-                    world.delete(wolf);
-                }
-            }
-
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
- */
     public void eatBerries(Bush bush) {
-        bush.hasBerries = false;
+        bush.eatBerries();
         eat(1);
     }
 
     public void eat(int foodSize) {
         this.hunger = hunger + foodSize;
     }
+
+    @Override
+    public DisplayInformation getInformation() {
+        if (this.age > 4) {
+            if (sleeping) {
+                return new DisplayInformation(Color.GRAY, "bear-sleeping", false);
+            } else {
+                return new DisplayInformation(Color.GRAY, "bear", false);
+            }
+        } else {
+            if (sleeping) {
+                return new DisplayInformation(Color.GRAY, "bear-small-sleeping", false);
+            } else {
+                return new DisplayInformation(Color.GRAY, "bear-small", false);
+            }
+        }
+    }
 }
+
