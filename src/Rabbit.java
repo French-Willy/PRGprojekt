@@ -53,7 +53,7 @@ public class Rabbit extends Animals {
             if (lastPosition != null) {
                 wakeUp(lastPosition);
             } else {
-                wakeUp(this.location);
+                wakeUp(getLocation(this));
             }
         } else if (world.getEntities().get(this) != null && world.isDay()) {
             //System.out.println(world.getEntities().get(this));
@@ -176,7 +176,7 @@ public class Rabbit extends Animals {
                         Rabbit rabbit = (Rabbit) world.getTile(tile);
                         if (rabbit.age >= 1 && rabbit.oneChildOnly) {
                             Rabbit rabbitChild = new Rabbit(0, 5, 5, 20, world);
-                            Set<Location> neighbours = world.getEmptySurroundingTiles(this.location);
+                            Set<Location> neighbours = world.getEmptySurroundingTiles(getLocation(this));
                             List<Location> list = new ArrayList<>(neighbours);
                             if (list.size() <= 0) {
                                 //deleteGrass(this,world);

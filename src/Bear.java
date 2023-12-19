@@ -84,7 +84,7 @@ public class Bear extends Animals {
         while (mayIMove == false) {
             int randomNum = ThreadLocalRandom.current().nextInt(0, list.size());
             Location l = list.get(randomNum);
-            if (territory.contains(l)) {
+            if (this.territory.contains(l)) {
                 mayIMove = true;
                 territoryLocation = l;
             } else {

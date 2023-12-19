@@ -30,6 +30,8 @@ public class Main {
         Person person = new Person(place);
 
         world.setTile(place, person);
+        Location placetest = new Location(2,2);
+        world.setTile(placetest, new Crocodile(0, 10, 100, 100, world, placetest, null));
 
         //Adds the inputlist from the filereader into main
         for (ArrayList<String> spawnObject : file.inputLines) {
