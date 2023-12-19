@@ -62,6 +62,10 @@ public class Crocodile extends Animals {
         }
     }
 
+    public void test(){
+        
+    }
+
     private void move() {
         boolean mayIMove = false;
         Location territoryLocation = null;
