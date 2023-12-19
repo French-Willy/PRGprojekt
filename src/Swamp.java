@@ -12,6 +12,9 @@ Location area;
         this.area = area;
     }
 
+    public void test(){
+
+    }
 
     @Override
     public DisplayInformation getInformation() {
