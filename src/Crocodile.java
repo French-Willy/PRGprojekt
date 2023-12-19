@@ -17,7 +17,9 @@ public class Crocodile extends Animals {
 
     public Crocodile(int age, int hunger, int hp, int animalMeatAmount, World world, Location location, Set<Location> homeSwamp) {
         super(age, hunger, hp, animalMeatAmount, world);
+        this.atk = 100;
         this.territory = world.getSurroundingTiles(location, 3);
+
         if (homeSwamp == null) {
             this.homeSwamp = world.getSurroundingTiles(location, 2);
             world.setTile(location, new Swamp(location));
@@ -53,17 +55,17 @@ public class Crocodile extends Animals {
         }
         if (world.isDay()) {
             sleeping = false;
-            move();
-            if (homeSwamp.contains(getLocation(this))) {
-                goUnderwater();
+            if (containsAnimal()) {
+                protectTerritory();
             } else {
-                emergeFromWater();
+                move();
+                if (homeSwamp.contains(getLocation(this))) {
+                    goUnderwater();
+                } else {
+                    emergeFromWater();
+                }
             }
         }
-    }
-
-    public void test(){
-        
     }
 
     private void move() {
@@ -108,6 +110,37 @@ public class Crocodile extends Animals {
         underwater = false;
     }
 
+    private boolean containsAnimal() {
+        for (Location tile : territory) {
+            if (tile != getLocation(this) && world.getTile(tile) != null) {
+                if (world.getTile(tile).getClass() == Rabbit.class || world.getTile(tile).getClass() == Wolf.class || world.getTile(tile).getClass() == Bear.class) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
+
+    private void protectTerritory() {
+        double closestAnimalDistance = 100;
+        Animals closestAnimal = null;
+        Location closestAnimalLocation = null;
+        for (Location tile : territory) {
+            if (tile != getLocation(this) && world.getTile(tile) != null) {
+                if (world.getTile(tile).getClass() == Rabbit.class || world.getTile(tile).getClass() == Wolf.class || world.getTile(tile).getClass() == Bear.class) {
+                    if (calculateDistance(getLocation(this), tile) < closestAnimalDistance) {
+                        closestAnimalDistance = calculateDistance(getLocation(this), tile);
+                        closestAnimal = (Animals) world.getTile(tile);
+                        closestAnimalLocation = tile;
+                    }
+                }
+            }
+        }
+        if (calculateDistance(getLocation(this), closestAnimalLocation) <= 1.5){
+            attack(this, closestAnimal);
+        }else{
+            makePath(this, getLocation(this), closestAnimalLocation);
+        }
+    }
 }
-

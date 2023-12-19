@@ -209,13 +209,12 @@ public class Bear extends Animals {
     private HashSet<Class> findFood() {
         HashSet<Class> surroundingFood = new HashSet<>();
 
-        for (Location x : territory) {
-            if (world.getTile(x) != null) {
-                surroundingFood.add(world.getTile(x).getClass());
+        for (Location tile : territory) {
+            if (world.getTile(tile) != null) {
+                surroundingFood.add(world.getTile(tile).getClass());
             }
         }
         return surroundingFood;
-        //seekFood(surroundingFood);
     }
 
     public void eatBerries(Bush bush) {
