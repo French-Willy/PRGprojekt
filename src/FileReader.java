@@ -3,11 +3,14 @@ import java.util.*;
 
 
 
-public class fileReader {
+public class FileReader {
     int worldsize_file;
     public ArrayList<ArrayList<String>> inputLines = new ArrayList<>();
     public void Reader() throws Exception {
-        File file = new File("data/InputFiles_Uge2/t2-8a.txt");
+      //  File file = new File("data/InputFiles_UGE1/t1-2cde.txt");
+      // File file = new File("data/InputFiles_Uge2/t2-5b.txt");
+        File file = new File("data/InputFiles_Uge3/t3-2ab.txt");
+       // File file = new File("data/InputFiles_UGE1/t1-2cde.txt");
         Scanner s = new Scanner(file);
 
         //The first line in every file is the world-size, so therefor it's easy to assign it as the first step.

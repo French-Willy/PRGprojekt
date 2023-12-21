@@ -12,7 +12,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Main {
     public static void main(String[] args) throws Exception {
 
-        fileReader file = new fileReader();
+        FileReader file = new FileReader();
         try {
             file.Reader();
             //file.getInputLines();
@@ -109,7 +109,7 @@ public class Main {
                     if (speceficSpawn == null) {
                         world.setTile(spawn, new Bear(0, 10, 50, 100, world, spawn));
                         System.out.println("random Spawn is : " + spawn);
-                    } else {
+                    } else if (world.isTileEmpty(speceficSpawn)){
                         world.setTile(speceficSpawn, new Bear(0, 10, 50, 100, world, spawn));
                         System.out.println("specefic Spawn is : " + speceficSpawn);
                     }

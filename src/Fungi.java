@@ -42,6 +42,11 @@ public class Fungi extends Plants implements NonBlocking{
         world.delete(this);
     }
 
+    /**
+     * calculates the radius that the fungi can find a carcass
+     * has a max radius of 3
+     * @return
+     */
     private int FungiRadius(){
         if (fungiSize <= 30 && fungiSize > 10){
             fRadius = fungiSize / 10;
@@ -51,6 +56,10 @@ public class Fungi extends Plants implements NonBlocking{
         return fRadius;
     }
 
+    /**
+     * checks if there is carcass's in the radius of the fungi, returns true.
+     * @return
+     */
     public boolean findCarcass(){
         this.location = world.getLocation(this);
         List<Location> SurroundingCarcass = new ArrayList<>();

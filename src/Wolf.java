@@ -77,7 +77,6 @@ public class Wolf extends Animals {
             if (timeCount % 2 == 0) {
                 if (hunger < 5) {
                     seekFood();
-                    System.out.println("I'm finding food");
                 } else {
                     move(this);
                 }

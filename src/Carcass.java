@@ -31,11 +31,20 @@ public class Carcass extends Inanimate {
         }
     }
 
+    /**
+     * @param meatChunk
+     * gets called from an animal that wants to eat the carcass
+     */
+
     public void meatEaten(int meatChunk) {
         meatAmount -= meatChunk;
         isRotten();
     }
 
+    /**
+     * finds a empty tile that a fungi can spawn on, to prevent that it dosen't remove anything on spawn
+     * also removes the carcass
+     */
     public void createFungi() {
         this.location = world.getLocation(this);
         for (Location tile : world.getEmptySurroundingTiles(location)) {
@@ -47,7 +56,7 @@ public class Carcass extends Inanimate {
                 }else{
                     world.delete(this);
                 }
-            } else {
+            } else if (world.containsNonBlocking(location) == false){
                 world.setTile(this.location, new Fungi(0, shroomSize, world));
                 world.delete(this);
             }

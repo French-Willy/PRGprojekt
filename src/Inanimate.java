@@ -2,6 +2,9 @@ import itumulator.simulator.Actor;
 import itumulator.world.Location;
 import itumulator.world.World;
 
+/**
+ * Classes that implements this, is not "alive"
+ */
 public class Inanimate implements Actor {
     protected Location location;
     protected World world;

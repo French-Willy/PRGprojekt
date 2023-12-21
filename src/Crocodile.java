@@ -15,6 +15,18 @@ public class Crocodile extends Animals {
     Set<Location> homeSwamp;
     Set<Location> territory;
 
+    /**
+     * Her bliver en Krokodille instantieret med følgende parameter. Når der er styr på både alder, sult og liv, bliver det muligt at
+     * forholde os til forskellige måder hvorpå krokodillen kan dø. Og inde i konstruktøren bliver der initialiseret et Set af lokationer
+     * kaldet "territory" - der svarer til dets surroundingTiles når den bliver sat ind i verden, hvor krokodillen vil bo samt beskytte.
+     * @param age
+     * @param hunger
+     * @param hp
+     * @param animalMeatAmount
+     * @param world
+     * @param location
+     * @param homeSwamp
+     */
     public Crocodile(int age, int hunger, int hp, int animalMeatAmount, World world, Location location, Set<Location> homeSwamp) {
         super(age, hunger, hp, animalMeatAmount, world);
         this.atk = 100;
@@ -42,7 +54,13 @@ public class Crocodile extends Animals {
         }
     }
 
-
+    /**
+     * Det vigtigste i denne her act-metode er, at krokodillens "underwater" boolean skiftes mellem false og true.
+     * Ligesom bjørnen (Se bjørn act-metode), så beskytter krokodillen under alle omstændigheder - medmindre den sover - sit territorie.
+     * Dog i modsætning til bjørnen, angriber den alt og alle - ligemeget om den er sulten eller ej.
+     * Og først efter den har fjernet alle dyr fra området, vil den søge efter mad.
+     * @param world providing details of the position on which the actor is currently located and much more.
+     */
     @Override
     public void act(World world) {
         super.act(world);
@@ -71,6 +89,11 @@ public class Crocodile extends Animals {
         }
     }
 
+    /**
+     * seekFood vil tjekke om der er ådsel i krokodillens territorie. Ligesom bjørnen (Se seekFood-metoden i bjørn*).
+     * Den kigger igennem territoriet og finder det tættestse ådsel, og spiser det, hvis den er tæt nok, ellers så laver den en
+     * vej derhen (Se makePath-metoden)
+     */
     private void seekFood(){
     double distanceToClosestCarcass = 100;
     Carcass closestCarcass = null;
