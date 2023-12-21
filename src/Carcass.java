@@ -34,18 +34,22 @@ public class Carcass extends Inanimate {
         isRotten();
     }
     public void createFungi(){
-        this.location = world.getLocation(this);
-        for (Location tile : world.getEmptySurroundingTiles(location)) {
-            if (world.getTile(tile) == null){
-                world.setTile(tile, new Fungi(0,shroomSize,world));
-            }else{
-                if (world.containsNonBlocking(getLocation(this))){
-                    world.delete(world.getNonBlocking(getLocation(this)));
+        if (shroomSize >= 20){
+            this.location = world.getLocation(this);
+            for (Location tile : world.getEmptySurroundingTiles(location)) {
+                if (world.getTile(tile) == null){
+                    world.setTile(tile, new Fungi(0,shroomSize,world));
+                }else{
+                    if (world.containsNonBlocking(getLocation(this))){
+                        world.delete(world.getNonBlocking(getLocation(this)));
+                    }
+                    world.setTile(this.location, new Fungi(0,shroomSize,world));
                 }
-                world.setTile(this.location, new Fungi(0,shroomSize,world));
+                world.delete(this);
+                break;
             }
+        }else{
             world.delete(this);
-            break;
         }
     }
 
