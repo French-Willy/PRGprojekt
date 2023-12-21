@@ -29,7 +29,7 @@ public class Main {
         Location place = new Location(0, 1);
         Person person = new Person(place);
 
-        world.setTile(place, person);
+        //world.setTile(place, person);
         Location placetest = new Location(2,2);
         world.setTile(placetest, new Crocodile(0, 10, 100, 100, world, placetest, null));
 
@@ -51,7 +51,7 @@ public class Main {
             }
         }
 
-        DisplayInformation di = new DisplayInformation(Color.RED, "steve", true);
+        DisplayInformation di = new DisplayInformation(Color.RED, "steve", false);
         DisplayInformation diGrass = new DisplayInformation(Color.GREEN, "grass1", true);
         DisplayInformation diRabbit = new DisplayInformation(Color.white, "rabbit-large", false);
         DisplayInformation diBurrow = new DisplayInformation(Color.black, "hole", false);

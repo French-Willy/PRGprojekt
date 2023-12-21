@@ -16,7 +16,6 @@ public class WolfCave extends Inanimate implements NonBlocking {
     public static void createNewCave(World world, Location location) {
         HashSet<Wolf> caveSpace = new HashSet<>();
         world.setTile(location, new WolfCave(world, caveSpace));
-        System.out.println("cave lavet.... pog ");
     }
 
     public void enterCave(Wolf wolf) {

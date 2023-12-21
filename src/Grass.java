@@ -34,7 +34,6 @@ public class Grass extends Plants implements NonBlocking {
             // world.delete(this);
         }
         }catch(Exception e){
-            System.out.println(e.getMessage());
         }
 
     }
