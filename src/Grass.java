@@ -40,13 +40,6 @@ public class Grass extends Plants implements NonBlocking {
     }
 
 
-    private void deleteGrass(Grass grass, World world) {
-
-        world.remove(this)
-        ;
-    }
-
-
     private void reproduction(Grass grass, World world) {
         for (Location tile : world.getSurroundingTiles()) {
             if (world.getTile(tile) != null) {

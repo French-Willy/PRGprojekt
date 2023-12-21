@@ -37,7 +37,7 @@ public class Animals implements Actor, DynamicDisplayInformationProvider {
             //checkHunger();
         }
         ageing();
-        if (isDead(this)) {
+        if (isDead(this) && getLocation(this) != null) {
             die(this);
         }
     }
@@ -46,7 +46,7 @@ public class Animals implements Actor, DynamicDisplayInformationProvider {
         return world.getEntities().get(animal);
     }
 
-    public void eat(Carcass carcass, int biteSize) {
+    protected void eat(Carcass carcass, int biteSize) {
         carcass.meatEaten(biteSize);
         hunger = hunger + 5;
     }
@@ -68,12 +68,17 @@ public class Animals implements Actor, DynamicDisplayInformationProvider {
     }
 
     public void die(Animals animal) {
-        Location location = world.getLocation(animal);
+        Location location = getLocation(animal);
         world.delete(animal);
-        world.setTile(location, new Carcass(animalMeatAmount, world));
+        System.out.println(animal + " die here: " + location);
+        if(location != null) {
+            world.setTile(location, new Carcass(animalMeatAmount, world));
+        }
     }
 
-    //Gør det som alle dyr har tilfælles.
+    protected void move(Animals animal){
+        world.move(animal, getRandomSurroundingLocation(getLocation(animal)));
+    }
 
     public void hunger() {
         if (timeCount % 4 == 0 && hunger > 0) {

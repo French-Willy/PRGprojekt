@@ -14,9 +14,7 @@ import java.util.spi.LocaleServiceProvider;
 public class Wolf extends Animals {
     Location lastPosition;
     Location homeCave;
-
     boolean oneChildOnly;
-
     boolean huntingBear = false;
     int Actions;
 
@@ -53,91 +51,72 @@ public class Wolf extends Animals {
         }
         if (huntingBear == true) {
             seekFood();
-            Actions ++;
+            Actions++;
         }
 
         if (Actions == 0 && world.getEntities().get(this) != null && world.isNight() && hunger > 2 && huntingBear == false) {
             seekCave();
 
-        }
-        else if (Actions == 0 && getLocation(this) != null){
-            move();
+        } else if (Actions == 0 && getLocation(this) != null) {
+            wolfMove();
         }
         if (Actions == 0 && world.isDay() && getLocation(this) == null) {
             if (homeCave != null) {
                 wakeUp(homeCave);
             }
-        }
-        else if (Actions == 0 && world.isDay() && getLocation(this) != null){
-            move();
+        } else if (Actions == 0 && world.isDay() && getLocation(this) != null) {
+            wolfMove();
         }
         if (Actions == 0 && world.isNight() && getLocation(this) == null && homeCave != null) {
             reproduce();
         }
     }
 
-    protected void move() {
-        this.location = world.getLocation(this);
-        if (world.getEmptySurroundingTiles(this.location).isEmpty()) {
-        } else {
-            if (age > 4 || hunger < 3) {
-                if (timeCount % 2 == 0) {
-                    this.location = world.getLocation(this);
-                    Set<Location> neighbours = world.getEmptySurroundingTiles(this.location);
-                    List<Location> list = new ArrayList<>(neighbours);
-                    int randomNum = ThreadLocalRandom.current().nextInt(0, list.size());
-                    Location l = list.get(randomNum);
-                    world.move(this, l);
+    protected void wolfMove() {
+        if (age > 4 || hunger < 5) {
+            if (timeCount % 2 == 0) {
+                if (hunger < 5) {
                     seekFood();
+                    System.out.println("I'm finding food");
+                } else {
+                    move(this);
                 }
-            } else {
-                this.location = world.getLocation(this);
-                Set<Location> neighbours = world.getEmptySurroundingTiles(this.location);
-                List<Location> list = new ArrayList<>(neighbours);
-                int randomNum = ThreadLocalRandom.current().nextInt(0, list.size());
-                Location l = list.get(randomNum);
-                world.move(this, l);
-                seekFood();
             }
+        } else {
+            move(this);
         }
     }
-
-    public void territory(){
-      //  Set<Location> territory = world.getSurroundingTiles(getLocation(this),3);
-        //if (territory.contains(Wolf.class)){
-        }
 
 
     public void seekFood() {
         int counter = 0;
-        double closestPreyDistance = 7;
-        double closestCarcasDistance = 7;
+        double closestPreyDistance = 20;
+        double closestCarcasDistance = 20;
         Object closestPrey = null;
-        for (Location tile : world.getSurroundingTiles()){
-            if (world.getTile(tile) != null && world.getTile(tile).getClass() == Wolf.class && homeCave != null){
+        for (Location tile : world.getSurroundingTiles()) {
+            if (world.getTile(tile) != null && world.getTile(tile).getClass() == Wolf.class && homeCave != null) {
                 WolfCave wolfcave = (WolfCave) world.getNonBlocking(homeCave);
-                if (wolfcave.getCaveSpace(wolfcave).contains(this) && wolfcave.getCaveSpace(wolfcave).contains(world.getTile(tile)) == false){
+                if (wolfcave.getCaveSpace(wolfcave).contains(this) && wolfcave.getCaveSpace(wolfcave).contains(world.getTile(tile)) == false) {
                     attack(this, (Animals) world.getTile(tile));
                     break;
                 }
             }
         }
         for (Location tile : world.getSurroundingTiles()) {
-            if (world.getTile(tile) != null && world.getTile(tile).getClass() == Carcass.class){
+            if (world.getTile(tile) != null && world.getTile(tile).getClass() == Carcass.class) {
                 eat((Carcass) world.getTile(tile), 10);
-                counter ++;
+                counter++;
                 huntingBear = false;
                 break;
-            }
-            else if (world.getTile(tile) != null && world.getTile(tile).getClass() == Rabbit.class) {
+            } else if (world.getTile(tile) != null && world.getTile(tile).getClass() == Rabbit.class) {
                 attack(this, (Animals) world.getTile(tile));
-                counter ++;
+                counter++;
                 break;
             }
         }
-        if (hunger < 10 && counter == 0){
+        if (hunger < 10 && counter == 0 && getLocation(this) != null) {
             if (findClosestObject(this, Carcass.class) != null) {
-                makePath(this, getLocation(this),world.getEntities().get(findClosestObject(this,Carcass.class)));
+                makePath(this, getLocation(this), world.getEntities().get(findClosestObject(this, Carcass.class)));
             }
         }
         if (homeCave != null && hunger < 3 && counter == 0 && isPack() == true || huntingBear == true) {
@@ -167,11 +146,11 @@ public class Wolf extends Animals {
     /**
      *
      */
-    public void packHuntBear(){
+    public void packHuntBear() {
         WolfCave wolfcave = (WolfCave) world.getNonBlocking(homeCave);
         wolfcave.getCaveSpace(wolfcave);
-        for (Wolf wolf : wolfcave.getCaveSpace(wolfcave)){
-            wolf.huntingBear= true;
+        for (Wolf wolf : wolfcave.getCaveSpace(wolfcave)) {
+            wolf.huntingBear = true;
         }
     }
 
@@ -191,7 +170,6 @@ public class Wolf extends Animals {
             return false;
         }
     }
-
 
 
     public void Dig(Location location) {
@@ -234,8 +212,7 @@ public class Wolf extends Animals {
                     }
                 }
             }
-        }
-        catch(IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
         }
     }
 
@@ -272,7 +249,7 @@ public class Wolf extends Animals {
                                 distancetoClosestWolfCave = calculateDistance(world.getLocation(this), world.getLocation(object));
                                 closestWolfCave = world.getEntities().get(object);
                             }
-                            if (calculateDistance(world.getEntities().get(this), closestWolfCave) <=1) {
+                            if (calculateDistance(world.getEntities().get(this), closestWolfCave) <= 1) {
                                 lastPosition = world.getEntities().get(this);
                                 homeCave = closestWolfCave;
                                 ((WolfCave) object).enterCave(this);

@@ -10,7 +10,6 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Rabbit extends Animals {
     Location homeBurrow;
     boolean oneChildOnly;
-    HashMap<Object, Location> favoriteBurrowMap;
     Location lastPosition;
 
     public Rabbit(int age, int hunger, int hp, int animalMeatAmount, World world) {
@@ -56,72 +55,40 @@ public class Rabbit extends Animals {
                 wakeUp(getLocation(this));
             }
         } else if (world.getEntities().get(this) != null && world.isDay()) {
-            //System.out.println(world.getEntities().get(this));
             sleeping = false;
-            move();
+            Rabbitmove();
             reproduction(world);
         }
     }
 
-    public void move() {
-        //System.out.println("hvad sker der???");
-        int counter = 0;
+    private void Rabbitmove() {
+        boolean danger = false;
         Set<Location> territory = world.getSurroundingTiles(getLocation(this), 2);
-        System.out.println(territory);
         for (Location l : territory) {
             if (world.isTileEmpty(l) == false) {
                 if (world.getTile(l).getClass() == Wolf.class) {
-                    System.out.println("flygt!!!");
                     makePathAway(this, getLocation(this), getLocation((Animals) findClosestObject(this, Wolf.class)));
-                    counter++;
+                    danger = true;
                     break;
                 }
             }
         }
-        if (age > 2 || hunger < 3 && counter == 0) {
+        if (age > 2 || hunger < 4 && !danger) {
             if (timeCount % 2 == 0) {
-                world.move(this, getRandomSurroundingLocation(getLocation(this)));
-                seekFood(Grass.class);
-            }
-        } else {
-            System.out.println("im just chilling");
-            world.move(this, getRandomSurroundingLocation(getLocation(this)));
-            seekFood(Grass.class);
-        }
-    }
-
-    public void move2() {
-        this.location = world.getLocation(this);
-        if (world.getEmptySurroundingTiles(this.location).isEmpty()) {
-        } else {
-            if (age > 1 || hunger < 3) {
-                if (timeCount % 2 == 0) {
-                    this.location = world.getLocation(this);
-                    Set<Location> neighbours = world.getEmptySurroundingTiles(this.location);
-                    List<Location> list = new ArrayList<>(neighbours);
-                    int randomNum = ThreadLocalRandom.current().nextInt(0, list.size());
-                    Location l = list.get(randomNum);
-                    world.move(this, l);
-                    this.location = world.getLocation(this);
+                if (hunger < 4) {
                     seekFood(Grass.class);
+                } else {
+                    move(this);
                 }
-            } else {
-                this.location = world.getLocation(this);
-                Set<Location> neighbours = world.getEmptySurroundingTiles(this.location);
-                List<Location> list = new ArrayList<>(neighbours);
-                int randomNum = ThreadLocalRandom.current().nextInt(0, list.size());
-                Location l = list.get(randomNum);
-                world.move(this, l);
-                this.location = world.getLocation(this);
-                seekFood(Grass.class);
             }
+        } else if (hunger < 7 && !danger) {
+            move(this);
         }
     }
 
 
-    public void eat(Location tile) {
+    public void eatGrass(Location tile) {
         try {
-            // if (world.getNonBlocking(this.location).getClass() == Grass.class) {
             world.delete((world.getNonBlocking(tile)));
 
             hunger = hunger + 3;
@@ -135,7 +102,7 @@ public class Rabbit extends Animals {
         if (hunger < 5) {
             for (Location tile : world.getSurroundingTiles()) {
                 if (world.getTile(tile) != null && world.getTile(tile).getClass() == type) {
-                    eat(tile);
+                    eatGrass(tile);
                     world.move(this, tile);
                     break;
                 }
@@ -155,8 +122,6 @@ public class Rabbit extends Animals {
             if (location != null) {
                 Burrow.createNewBurrow(world, world.getEntities().get(this));
             }
-
-
         }
     }
 
@@ -171,7 +136,6 @@ public class Rabbit extends Animals {
         if (age == 1 && this.oneChildOnly) {
             for (Location tile : world.getSurroundingTiles()) {
                 if (world.getTile(tile) != null) {
-                    System.out.println("hjælp");
                     if (world.getTile(tile).getClass() == Rabbit.class && world.getTile(tile) != this) {
                         Rabbit rabbit = (Rabbit) world.getTile(tile);
                         if (rabbit.age >= 1 && rabbit.oneChildOnly) {
@@ -179,7 +143,7 @@ public class Rabbit extends Animals {
                             Set<Location> neighbours = world.getEmptySurroundingTiles(getLocation(this));
                             List<Location> list = new ArrayList<>(neighbours);
                             if (list.size() <= 0) {
-                                //deleteGrass(this,world);
+
                             } else {
                                 int randomNum = ThreadLocalRandom.current().nextInt(0, list.size());
                                 Location l = list.get(randomNum);
@@ -189,7 +153,6 @@ public class Rabbit extends Animals {
                                 if (this.homeBurrow != null) {
                                     Burrow burrow = (Burrow) world.getNonBlocking(homeBurrow);
                                     if (burrow.burrowSpace.size() < 5) {
-                                        System.out.println("mine forældres hul er kun: " + burrow.burrowSpace.size() + " fyldt");
                                         burrow.enterBurrow(rabbitChild);
                                         rabbitChild.homeBurrow = homeBurrow;
                                     }
@@ -205,12 +168,10 @@ public class Rabbit extends Animals {
 
 
     public void seekShelter() {
-        int counter = 0;
         double distancetoClosestBurrow = 100.0;
         Location closestBurrow = null;
         boolean areHoles = false;
         Burrow burrow = null;
-
 
         if (homeBurrow != null) {
             if (world.getEntities().get(this) != null && world.isNight()) {
@@ -230,7 +191,6 @@ public class Rabbit extends Animals {
                         while (calculateDistance(world.getEntities().get(this), world.getEntities().get(entity)) < distancetoClosestBurrow) {
                             distancetoClosestBurrow = calculateDistance(world.getLocation(this), world.getLocation(entity));
                             closestBurrow = world.getEntities().get(entity);
-                            System.out.println(closestBurrow);
                             areHoles = true;
                             burrow = (Burrow) entity;
                         }

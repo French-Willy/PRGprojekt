@@ -33,9 +33,9 @@ public class Crocodile extends Animals {
     public DisplayInformation getInformation() {
         if (underwater) {
             if (sleeping) {
-                return new DisplayInformation(Color.GRAY, "Crocodile-underwatersleeping", false);
+                return new DisplayInformation(Color.GRAY, "Crocodile-underwatersleeping", true);
             } else {
-                return new DisplayInformation(Color.GRAY, "Crocodile-underwater", false);
+                return new DisplayInformation(Color.GRAY, "Crocodile-underwater", true);
             }
         } else {
             return new DisplayInformation(Color.GRAY, "Crocodile", false);
@@ -57,18 +57,48 @@ public class Crocodile extends Animals {
             sleeping = false;
             if (containsAnimal()) {
                 protectTerritory();
+            } else if (hunger < 5) {
+                seekFood();
+            }
+            if(getLocation(this) != null) {
+                crocodileMove();
+            }
+            if (homeSwamp.contains(getLocation(this))) {
+                goUnderwater();
             } else {
-                move();
-                if (homeSwamp.contains(getLocation(this))) {
-                    goUnderwater();
-                } else {
-                    emergeFromWater();
-                }
+                emergeFromWater();
             }
         }
     }
 
-    private void move() {
+    private void seekFood(){
+    double distanceToClosestCarcass = 100;
+    Carcass closestCarcass = null;
+    Location CarcassLocation = null;
+        
+        for(Location tile : territory){
+            if(world.getTile(tile) != null){
+                if(world.getTile(tile).getClass() == Carcass.class && getLocation(this) != null){
+                    if(calculateDistance(getLocation(this), tile) < distanceToClosestCarcass && tile != null){
+                        distanceToClosestCarcass = calculateDistance(getLocation(this), tile);
+                        closestCarcass = (Carcass) world.getTile(tile);
+                        CarcassLocation = tile;
+                    }
+                }
+            }
+        }
+        if(distanceToClosestCarcass <= 1.5){
+            eat(closestCarcass, 30);
+        } else if (CarcassLocation != null){
+            makePath(this, getLocation(this), CarcassLocation);
+        }
+    }
+
+
+
+
+
+    private void crocodileMove() {
         boolean mayIMove = false;
         Location territoryLocation = null;
         Set<Location> neighbours = world.getEmptySurroundingTiles(getLocation(this));
@@ -97,7 +127,7 @@ public class Crocodile extends Animals {
         Location closestTile = null;
         if (!homeSwamp.contains(world.getEntities().get(this))) {
             for (Location tile : homeSwamp) {
-                if (calculateDistance(getLocation(this), tile) < tileDistance) {
+                if (calculateDistance(getLocation(this), tile) < tileDistance && world.getTile(tile) != null) {
                     tileDistance = calculateDistance(getLocation(this), tile);
                     closestTile = tile;
                 }
@@ -137,9 +167,9 @@ public class Crocodile extends Animals {
                 }
             }
         }
-        if (calculateDistance(getLocation(this), closestAnimalLocation) <= 1.5){
+        if (calculateDistance(getLocation(this), closestAnimalLocation) <= 1.5) {
             attack(this, closestAnimal);
-        }else{
+        } else {
             makePath(this, getLocation(this), closestAnimalLocation);
         }
     }

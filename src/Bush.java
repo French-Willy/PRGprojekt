@@ -23,13 +23,11 @@ public class Bush extends Plants {
         }
     }
 
-    public boolean getHasBerries() {
-        return hasBerries;
-    }
-
-
-    protected void eatBerries() {
-        hasBerries = false;
+    protected void eatBerries(Bear bear) {
+        if(hasBerries){
+            hasBerries = false;
+            bear.hunger = bear.hunger + 2;
+        }
     }
 
     @Override

@@ -1,6 +1,7 @@
 import itumulator.executable.DisplayInformation;
 import itumulator.world.Location;
 import itumulator.world.World;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -60,13 +61,12 @@ public class Bear extends Animals {
                 seekFood();
                 System.out.println("HUNGRYYY: " + hunger);
             } else {
-                move();
+                bearMove();
             }
         }
     }
 
     private void ofAge() {
-
         if (this.age > 4) {
             this.atk = atk + 5;
             this.animalMeatAmount = animalMeatAmount * 2;
@@ -74,7 +74,7 @@ public class Bear extends Animals {
         }
     }
 
-    private void move() {
+    private void bearMove() {
         boolean mayIMove = false;
         Location territoryLocation = null;
         this.location = world.getLocation(this);
@@ -124,7 +124,7 @@ public class Bear extends Animals {
 
     public void seekFood() {
         HashSet<Class> surroundingFood = findFood();
-        if (hunger < 11) {
+        if (hunger < 4) {
             if (surroundingFood.contains(Carcass.class)) {
                 double DistanceToClosestCarcass = findClosestObjectDistance(this, Carcass.class);
                 Object closestCarcass = findClosestObject(this, Carcass.class);
@@ -179,7 +179,9 @@ public class Bear extends Animals {
 
                     }
                 }
-            } else { move(); }
+            } else {
+                bearMove();
+            }
 
         } else if (hunger <= 6) {
             if (surroundingFood.contains(Bush.class)) {
@@ -201,7 +203,7 @@ public class Bear extends Animals {
                     }
                 }
             } else {
-                move();
+                bearMove();
             }
         }
     }
@@ -218,12 +220,7 @@ public class Bear extends Animals {
     }
 
     public void eatBerries(Bush bush) {
-        bush.eatBerries();
-        eat(1);
+        bush.eatBerries(this);
     }
 
-    public void eat(int foodSize) {
-        this.hunger = hunger + foodSize;
-    }
 }
-
