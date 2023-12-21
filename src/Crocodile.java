@@ -109,7 +109,7 @@ public class Crocodile extends Animals {
     public void emergeFromWater() {
         underwater = false;
     }
-
+    
     private boolean containsAnimal() {
         for (Location tile : territory) {
             if (tile != getLocation(this) && world.getTile(tile) != null) {

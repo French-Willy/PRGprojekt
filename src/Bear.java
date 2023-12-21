@@ -47,7 +47,6 @@ public class Bear extends Animals {
 
         } else if (world.isDay() && world.getEntities().get(this) == null) {
 
-            System.out.println("Bear has awoken at this location: " + this.location);
 
         } else if (world.isDay()) {
             if (!ofAge) {
@@ -58,7 +57,6 @@ public class Bear extends Animals {
                 protectTerritory();
             } else if (hunger <= 10) {
                 seekFood();
-                System.out.println("HUNGRYYY: " + hunger);
             } else {
                 move();
             }
@@ -132,13 +130,11 @@ public class Bear extends Animals {
                     if (world.getTile(tile) == closestCarcass) {
                         if (DistanceToClosestCarcass <= 1.5) {
                             eat((Carcass) closestCarcass, 20);
-                            System.out.println("NOM NOM NOM, my hunger is now: " + hunger);
                             break;
                         } else {
                             makePath(this, world.getEntities().get(this), world.getLocation(closestCarcass));
                             if (DistanceToClosestCarcass <= 1.5) {
                                 eat((Carcass) closestCarcass, 20);
-                                System.out.println("NOM NOM NOM, my hunger is now: " + hunger);
                             }
                         }
                     }

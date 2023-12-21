@@ -34,7 +34,7 @@ public class Carcass extends Inanimate {
         isRotten();
     }
     public void createFungi(){
-        if (shroomSize >= 20){
+        if (shroomSize >= 10){
             this.location = world.getLocation(this);
             for (Location tile : world.getEmptySurroundingTiles(location)) {
                 if (world.getTile(tile) == null){

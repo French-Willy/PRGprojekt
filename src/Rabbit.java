@@ -49,14 +49,12 @@ public class Rabbit extends Animals {
         }
 
         if (world.getEntities().get(this) == null && world.isDay()) {
-            System.out.println("vågn op " + lastPosition);
             if (lastPosition != null) {
                 wakeUp(lastPosition);
             } else {
                 wakeUp(getLocation(this));
             }
         } else if (world.getEntities().get(this) != null && world.isDay()) {
-            //System.out.println(world.getEntities().get(this));
             sleeping = false;
             move();
             reproduction(world);
@@ -64,14 +62,11 @@ public class Rabbit extends Animals {
     }
 
     public void move() {
-        //System.out.println("hvad sker der???");
         int counter = 0;
         Set<Location> territory = world.getSurroundingTiles(getLocation(this), 2);
-        System.out.println(territory);
         for (Location l : territory) {
             if (world.isTileEmpty(l) == false) {
                 if (world.getTile(l).getClass() == Wolf.class) {
-                    System.out.println("flygt!!!");
                     makePathAway(this, getLocation(this), getLocation((Animals) findClosestObject(this, Wolf.class)));
                     counter++;
                     break;
@@ -84,7 +79,6 @@ public class Rabbit extends Animals {
                 seekFood(Grass.class);
             }
         } else {
-            System.out.println("im just chilling");
             world.move(this, getRandomSurroundingLocation(getLocation(this)));
             seekFood(Grass.class);
         }
@@ -126,7 +120,6 @@ public class Rabbit extends Animals {
 
             hunger = hunger + 3;
         } catch (Exception e) {
-            System.out.println(e.getMessage());
         }
     }
 
@@ -162,7 +155,6 @@ public class Rabbit extends Animals {
 
     public void wakeUp(Location location) {
         if (world.isTileEmpty(location)) {
-            System.out.println();
             world.setTile(location, this);
         }
     }
@@ -171,7 +163,6 @@ public class Rabbit extends Animals {
         if (age == 1 && this.oneChildOnly) {
             for (Location tile : world.getSurroundingTiles()) {
                 if (world.getTile(tile) != null) {
-                    System.out.println("hjælp");
                     if (world.getTile(tile).getClass() == Rabbit.class && world.getTile(tile) != this) {
                         Rabbit rabbit = (Rabbit) world.getTile(tile);
                         if (rabbit.age >= 1 && rabbit.oneChildOnly) {
@@ -184,12 +175,10 @@ public class Rabbit extends Animals {
                                 int randomNum = ThreadLocalRandom.current().nextInt(0, list.size());
                                 Location l = list.get(randomNum);
                                 world.setTile(l, rabbitChild);
-                                System.out.println("jeg har født");
                                 this.oneChildOnly = false;
                                 if (this.homeBurrow != null) {
                                     Burrow burrow = (Burrow) world.getNonBlocking(homeBurrow);
                                     if (burrow.burrowSpace.size() < 5) {
-                                        System.out.println("mine forældres hul er kun: " + burrow.burrowSpace.size() + " fyldt");
                                         burrow.enterBurrow(rabbitChild);
                                         rabbitChild.homeBurrow = homeBurrow;
                                     }
@@ -230,7 +219,6 @@ public class Rabbit extends Animals {
                         while (calculateDistance(world.getEntities().get(this), world.getEntities().get(entity)) < distancetoClosestBurrow) {
                             distancetoClosestBurrow = calculateDistance(world.getLocation(this), world.getLocation(entity));
                             closestBurrow = world.getEntities().get(entity);
-                            System.out.println(closestBurrow);
                             areHoles = true;
                             burrow = (Burrow) entity;
                         }

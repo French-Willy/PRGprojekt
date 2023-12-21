@@ -18,7 +18,6 @@ public class Burrow extends Inanimate implements NonBlocking {
     public static void createNewBurrow(World world, Location location) {
         HashSet<Rabbit> burrowSpace = new HashSet<>();
         world.setTile(location, new Burrow(world,burrowSpace));
-        System.out.println("burrow lavet.... pog ");
     }
 
     public void enterBurrow(Rabbit rabbit) {
